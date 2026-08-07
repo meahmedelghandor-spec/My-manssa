@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { Video, Play, CheckCircle, Lock, Clock, Search, ChevronDown, ChevronUp, BarChart2, FileText, AlertTriangle, MessageCircle, Settings, LogOut, Menu, X, BookOpen, Send, Plus } from "lucide-react";
+import { Video, Play, CheckCircle, Lock, Clock, Search, ChevronDown, ChevronUp, ChevronRight, BarChart2, FileText, AlertTriangle, MessageCircle, Settings, LogOut, Menu, X, BookOpen, Send, Plus } from "lucide-react";
 import { getStudentTickets, getTicketMessages, createTicket, addMessageToTicket } from "@/app/actions/support";
 import { getUserProfile, logout } from "@/app/actions/auth";
 
@@ -219,8 +219,8 @@ export default function SupportPage() {
                         color: isMine ? "white" : "var(--color-text)",
                         padding: "1rem", borderRadius: "var(--radius-lg)", border: isMine ? "none" : "1px solid var(--color-border)",
                         maxWidth: "85%", boxShadow: "var(--shadow-sm)",
-                        borderBottomInlineStartRadius: !isMine ? 0 : "var(--radius-lg)",
-                        borderBottomInlineEndRadius: isMine ? 0 : "var(--radius-lg)"
+                        borderBottomRightRadius: !isMine ? 0 : "var(--radius-lg)",
+                        borderBottomLeftRadius: isMine ? 0 : "var(--radius-lg)"
                       }}>
                         {!isMine && msg.profiles && (
                           <div style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--primary-600)", marginBottom: "0.25rem" }}>

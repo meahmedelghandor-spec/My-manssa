@@ -186,8 +186,8 @@ export default function AdminSupportPage() {
                     color: isAdmin ? "white" : "var(--color-text)",
                     padding: "1rem", borderRadius: "var(--radius-lg)", border: isAdmin ? "none" : "1px solid var(--color-border)",
                     maxWidth: "85%", boxShadow: "var(--shadow-sm)",
-                    borderBottomInlineStartRadius: !isAdmin ? 0 : "var(--radius-lg)",
-                    borderBottomInlineEndRadius: isAdmin ? 0 : "var(--radius-lg)"
+                    borderBottomRightRadius: !isAdmin ? 0 : "var(--radius-lg)",
+                    borderBottomLeftRadius: isAdmin ? 0 : "var(--radius-lg)"
                   }}>
                     {!isAdmin && (
                       <div style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--primary-600)", marginBottom: "0.25rem" }}>
