@@ -6,6 +6,7 @@ import { Video, Play, ChevronLeft, ChevronDown, ChevronUp, BarChart2, FileText, 
 import { getCourseLectures } from "@/app/actions/student";
 import { getUserProfile, logout } from "@/app/actions/auth";
 import { useParams, useRouter } from "next/navigation";
+import VideoModal from "@/components/VideoModal";
 
 const sidebarLinks = [
   { href: "/dashboard", label: "الرئيسية", icon: BarChart2, active: false },
@@ -49,6 +50,7 @@ export default function CourseDetailsPage() {
   const [student, setStudent] = useState({ name: "جاري التحميل...", gradeLabel: "" });
   const [openUnits, setOpenUnits] = useState<string[]>([]);
   const [units, setUnits] = useState<any[]>([]);
+  const [selectedVideoUrl, setSelectedVideoUrl] = useState<string | null>(null);
 
   const getGradeLabel = (gId: string) => {
     const grades: Record<string, string> = {
@@ -147,9 +149,9 @@ export default function CourseDetailsPage() {
                               <div style={{ fontWeight: 800, color: "var(--color-heading)", fontSize: "0.95rem" }}>{lec.title}</div>
                               {lec.lesson_name && <div style={{ fontSize: "0.8rem", color: "var(--color-text-muted)", marginTop: "0.2rem" }}>{lec.lesson_name}</div>}
                             </div>
-                            <a href={lec.video_url} target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ padding: "0.5rem 1rem", fontSize: "0.85rem", borderRadius: "var(--radius-md)", flexShrink: 0 }}>
+                            <button onClick={() => setSelectedVideoUrl(lec.video_url)} className="btn btn-primary" style={{ padding: "0.5rem 1rem", fontSize: "0.85rem", borderRadius: "var(--radius-md)", flexShrink: 0, border: 'none', cursor: 'pointer' }}>
                               مشاهدة
-                            </a>
+                            </button>
                           </div>
                         ))}
                       </div>
@@ -162,6 +164,12 @@ export default function CourseDetailsPage() {
 
         </main>
       </div>
+
+      <VideoModal
+        isOpen={!!selectedVideoUrl}
+        videoUrl={selectedVideoUrl || ''}
+        onClose={() => setSelectedVideoUrl(null)}
+      />
 
       <style>{`
         .mob-menu { display: flex !important; }
