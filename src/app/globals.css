@@ -1,26 +1,295 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Cairo+Play:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
+/* ============================================================
+   DESIGN TOKENS — نظام التصميم الأساسي
+   ============================================================ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Primary — Indigo (مطابق لـ abdelmaaboud.com) */
+  --primary-50:  #eef2ff;
+  --primary-100: #e0e7ff;
+  --primary-200: #c7d2fe;
+  --primary-300: #a5b4fc;
+  --primary-400: #818cf8;
+  --primary-500: #6366f1;
+  --primary-600: #4f46e5;
+  --primary-700: #4338ca;
+  --primary-800: #3730a3;
+  --primary-900: #312e81;
+
+  /* Accent — Teal */
+  --accent-50:  #f0fdfa;
+  --accent-100: #ccfbf1;
+  --accent-400: #2dd4bf;
+  --accent-500: #14b8a6;
+
+  /* Neutral */
+  --neutral-50:  #f8fafc;
+  --neutral-100: #f1f5f9;
+  --neutral-200: #e2e8f0;
+  --neutral-300: #cbd5e1;
+  --neutral-400: #94a3b8;
+  --neutral-500: #64748b;
+  --neutral-600: #475569;
+  --neutral-700: #334155;
+  --neutral-800: #1e293b;
+  --neutral-900: #0f172a;
+
+  /* Status */
+  --success-500: #22c55e;
+  --warning-500: #f59e0b;
+  --error-500:   #ef4444;
+
+  /* Semantic */
+  --color-bg:          #f0f4ff;
+  --color-bg-soft:     #e8eeff;
+  --color-bg-muted:    var(--neutral-100);
+  --color-surface:     #ffffff;
+  --color-border:      #dde3f0;
+  --color-border-strong: var(--neutral-300);
+
+  --color-text:        var(--neutral-800);
+  --color-text-muted:  var(--neutral-500);
+  --color-text-subtle: var(--neutral-400);
+  --color-heading:     var(--neutral-900);
+
+  --color-primary:       var(--primary-500);
+  --color-primary-dark:  var(--primary-600);
+  --color-primary-hover: var(--primary-700);
+  --color-primary-light: var(--primary-50);
+
+  /* Spacing */
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   16px;
+  --radius-xl:   24px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm:  0 1px 3px 0 rgb(0 0 0 / 0.08);
+  --shadow-md:  0 4px 6px -1px rgb(0 0 0 / 0.10);
+  --shadow-lg:  0 10px 15px -3px rgb(0 0 0 / 0.08);
+  --shadow-xl:  0 20px 25px -5px rgb(0 0 0 / 0.10);
+  --shadow-primary: 0 8px 24px -4px rgb(99 102 241 / 0.30);
+
+  /* Typography */
+  --font-sans:    'Cairo', 'Segoe UI', sans-serif;
+  --font-display: 'Cairo Play', 'Cairo', sans-serif;
+
+  /* Layout */
+  --navbar-h:    64px;
+  --container-w: 1200px;
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.25s ease;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Dark mode */
+[data-theme="dark"] {
+  --color-bg:        #0f172a;
+  --color-bg-soft:   #1e293b;
+  --color-bg-muted:  #334155;
+  --color-surface:   #1e293b;
+  --color-border:    #334155;
+  --color-border-strong: #475569;
+  --color-text:      #e2e8f0;
+  --color-text-muted: #94a3b8;
+  --color-text-subtle: #64748b;
+  --color-heading:   #f8fafc;
+  --color-primary-light: rgba(99,102,241,0.15);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  background: var(--color-bg);
+  color: var(--color-text);
+  direction: rtl;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100dvh;
 }
+
+img, video { max-width: 100%; display: block; }
+a { text-decoration: none; }
+button { font-family: inherit; }
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.container {
+  width: 100%;
+  max-width: var(--container-w);
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+@media (min-width: 640px)  { .container { padding-inline: 2rem; } }
+@media (min-width: 1024px) { .container { padding-inline: 2.5rem; } }
+
+.section {
+  padding-block: 5rem;
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.6rem 1.25rem;
+  border-radius: var(--radius-md);
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 0.9375rem;
+  line-height: 1;
+  cursor: pointer;
+  border: none;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--primary-500);
+  color: #fff;
+  box-shadow: var(--shadow-primary);
+}
+.btn-primary:hover { background: var(--primary-600); transform: translateY(-1px); }
+
+.btn-outline {
+  background: transparent;
+  color: var(--color-primary);
+  border: 1.5px solid var(--color-primary);
+}
+.btn-outline:hover { background: var(--color-primary-light); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-text);
+  border: 1.5px solid var(--color-border);
+}
+.btn-ghost:hover { background: var(--color-bg-muted); }
+
+.btn-sm { padding: 0.45rem 0.9rem; font-size: 0.875rem; }
+.btn-lg { padding: 0.85rem 2rem; font-size: 1.0625rem; }
+
+/* ============================================================
+   FORMS
+   ============================================================ */
+.form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+
+.form-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.65rem 0.9rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  color: var(--color-text);
+  background: var(--color-surface);
+  transition: all var(--transition-fast);
+  outline: none;
+}
+.form-input:focus {
+  border-color: var(--primary-400);
+  box-shadow: 0 0 0 3px rgb(99 102 241 / 0.15);
+}
+.form-input::placeholder { color: var(--color-text-subtle); }
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+@keyframes fadeIn    { from { opacity: 0 }    to { opacity: 1 } }
+@keyframes fadeInUp  { from { opacity: 0; transform: translateY(20px) } to { opacity: 1; transform: none } }
+@keyframes scaleIn   { from { opacity: 0; transform: scale(0.95) } to { opacity: 1; transform: scale(1) } }
+@keyframes spin      { to { transform: rotate(360deg) } }
+@keyframes pulse     { 0%,100% { opacity: 1 } 50% { opacity: 0.5 } }
+@keyframes countdown { from { transform: scale(1.1) } to { transform: scale(1) } }
+@keyframes float     { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-8px) } }
+
+/* ============================================================
+   CARDS
+   ============================================================ */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  transition: all var(--transition-base);
+}
+.card:hover {
+  box-shadow: var(--shadow-xl);
+  transform: translateY(-3px);
+}
+
+/* ============================================================
+   SECTION TITLE
+   ============================================================ */
+.section-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  color: var(--color-heading);
+  text-align: center;
+  line-height: 1.3;
+}
+
+.section-subtitle {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 1rem;
+  max-width: 600px;
+  margin-inline: auto;
+  line-height: 1.7;
+}
+
+/* ============================================================
+   BADGE
+   ============================================================ */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.badge-primary {
+  background: var(--primary-50);
+  color: var(--primary-700);
+  border: 1px solid var(--primary-200);
+}
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--neutral-300); border-radius: 3px; }
