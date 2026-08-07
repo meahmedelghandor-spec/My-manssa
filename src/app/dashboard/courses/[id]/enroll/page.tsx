@@ -21,8 +21,8 @@ export default function EnrollPage() {
 
   // These should ideally come from database settings, hardcoded for now as per plan
   const PAYMENT_DETAILS = {
-    wallet: '01000000000',
-    instapay: 'teacher_instapay@instapay'
+    wallet: '01090583135',
+    instapay: '01090583135'
   };
 
   useEffect(() => {
