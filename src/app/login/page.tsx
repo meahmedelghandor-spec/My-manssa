@@ -16,9 +16,13 @@ export default function LoginPage() {
     const formData = new FormData(e.currentTarget);
     
     startTransition(async () => {
-      const res = await login(formData);
-      if (res?.error) {
-        setErrorMsg(res.error);
+      try {
+        const res = await login(formData);
+        if (res?.error) {
+          setErrorMsg(res.error);
+        }
+      } catch (err) {
+        setErrorMsg("حدث خطأ في الاتصال بالسيرفر. يرجى المحاولة مرة أخرى.");
       }
     });
   };

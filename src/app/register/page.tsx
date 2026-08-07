@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useTransition } from "react";
 import Link from "next/link";
@@ -49,10 +49,15 @@ export default function RegisterPage() {
     formData.append("section", section);
 
     startTransition(async () => {
-      const res = await signup(formData);
-      if (res?.error) {
-        setErrorMsg(res.error);
-        setStep(2); // Go back if error
+      try {
+        const res = await signup(formData);
+        if (res?.error) {
+          setErrorMsg(res.error);
+          setStep(2); // Go back if error
+        }
+      } catch (err) {
+        setErrorMsg("حدث خطأ غير متوقع. يرجى التأكد من اتصالك بالإنترنت والمحاولة مرة أخرى.");
+        setStep(2);
       }
     });
   };
