@@ -110,17 +110,18 @@ export default function DashboardPage() {
 
         <main style={{ flex: 1, padding: "1.5rem 1.25rem", maxWidth: 1000, width: "100%", margin: "0 auto" }}>
           
-          <div style={{ background: "linear-gradient(135deg, var(--primary-600), var(--primary-800))", borderRadius: "var(--radius-xl)", padding: "2rem", color: "#fff", display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "2rem", boxShadow: "var(--shadow-primary)", flexWrap: "wrap", gap: "1.5rem" }}>
-            <div>
-              <h1 style={{ fontFamily: "var(--font-display)", fontWeight: 900, fontSize: "1.75rem", marginBottom: "0.5rem" }}>أهلاً بك يا {student.name.split(' ')[0]} 👋</h1>
-              <p style={{ color: "rgba(255,255,255,0.8)", fontSize: "0.95rem", maxWidth: 400 }}>لقد أنجزت {student.progress}% من خطتك الأسبوعية. استمر في التفوق!</p>
+          <div style={{ background: "linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%)", borderRadius: "var(--radius-xl)", padding: "2.5rem 2rem", color: "#fff", display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "2rem", boxShadow: "0 20px 25px -5px rgba(79, 70, 229, 0.25), 0 10px 10px -5px rgba(79, 70, 229, 0.1)", flexWrap: "wrap", gap: "1.5rem", position: "relative", overflow: "hidden" }}>
+            <div style={{ position: "absolute", top: -50, insetInlineEnd: -50, width: 200, height: 200, background: "radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%)", borderRadius: "50%" }} />
+            <div style={{ position: "relative", zIndex: 1 }}>
+              <h1 style={{ fontFamily: "var(--font-display)", fontWeight: 900, fontSize: "1.85rem", marginBottom: "0.5rem", textShadow: "0 2px 10px rgba(0,0,0,0.1)" }}>أهلاً بك يا <span style={{ color: "#fde047" }}>{student.name.split(' ')[0]}</span> 👋</h1>
+              <p style={{ color: "rgba(255,255,255,0.9)", fontSize: "1rem", maxWidth: 400, lineHeight: 1.5 }}>لقد أنجزت {student.progress}% من خطتك الأسبوعية. استمر في التفوق!</p>
             </div>
-            <div style={{ position: "relative", width: 80, height: 80 }}>
-              <svg width="80" height="80" viewBox="0 0 100 100" style={{ transform: "rotate(-90deg)" }}>
-                <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="10" />
-                <circle cx="50" cy="50" r="45" fill="none" stroke="#fff" strokeWidth="10" strokeDasharray={`${student.progress * 2.82} 282`} strokeLinecap="round" />
+            <div style={{ position: "relative", width: 85, height: 85, zIndex: 1, filter: "drop-shadow(0 4px 6px rgba(0,0,0,0.1))" }}>
+              <svg width="85" height="85" viewBox="0 0 100 100" style={{ transform: "rotate(-90deg)" }}>
+                <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="8" />
+                <circle cx="50" cy="50" r="45" fill="none" stroke="#fde047" strokeWidth="8" strokeDasharray={`${student.progress * 2.82} 282`} strokeLinecap="round" style={{ transition: "stroke-dasharray 1s ease-out" }} />
               </svg>
-              <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: "1.1rem" }}>{student.progress}%</div>
+              <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 900, fontSize: "1.2rem", color: "#fff" }}>{student.progress}%</div>
             </div>
           </div>
 
