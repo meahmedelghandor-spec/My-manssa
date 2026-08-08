@@ -155,6 +155,11 @@ export default function DashboardPage() {
               ) : (
                 courses.map((course) => (
                   <div key={course.id} style={{ background: "var(--color-surface)", border: "1px solid var(--color-border)", borderRadius: "var(--radius-lg)", padding: "1.25rem", display: "flex", flexDirection: "column", gap: "1rem", boxShadow: "var(--shadow-sm)", transition: "transform var(--transition-fast)" }} className="hover-card">
+                    {course.image_url && (
+                      <div style={{ width: "100%", height: 140, borderRadius: "var(--radius-md)", overflow: "hidden", marginBottom: "-0.5rem" }}>
+                        <img src={course.image_url} alt={course.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                      </div>
+                    )}
                     <div>
                       <div style={{ fontSize: "0.75rem", color: "var(--primary-600)", fontWeight: 700, marginBottom: "0.25rem" }}>كورس دراسي</div>
                       <h3 style={{ fontWeight: 800, color: "var(--color-heading)", fontSize: "1.05rem", lineHeight: 1.4, overflow: "hidden", textOverflow: "ellipsis", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>
