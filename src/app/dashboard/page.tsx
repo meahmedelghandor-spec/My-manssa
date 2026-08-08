@@ -149,28 +149,33 @@ export default function DashboardPage() {
               </Link>
             </div>
             
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1rem" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "1.5rem" }}>
               {courses.length === 0 ? (
                 <div style={{ color: "var(--color-text-muted)" }}>لا توجد كورسات متاحة حالياً للمرحلة الخاصة بك</div>
               ) : (
                 courses.map((course) => (
-                  <div key={course.id} style={{ background: "var(--color-surface)", border: "1px solid var(--color-border)", borderRadius: "var(--radius-lg)", padding: "1.25rem", display: "flex", flexDirection: "column", gap: "1rem", boxShadow: "var(--shadow-sm)", transition: "transform var(--transition-fast)" }} className="hover-card">
-                    {course.image_url && (
-                      <div style={{ width: "100%", height: 140, borderRadius: "var(--radius-md)", overflow: "hidden", marginBottom: "-0.5rem" }}>
-                        <img src={course.image_url} alt={course.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  <div key={course.id} style={{ background: "var(--color-surface)", border: "1px solid var(--color-border)", borderRadius: "var(--radius-lg)", display: "flex", flexDirection: "column", boxShadow: "var(--shadow-sm)", transition: "transform var(--transition-fast)", overflow: "hidden" }} className="hover-card">
+                    {course.image_url ? (
+                      <div style={{ width: "100%", height: 160, backgroundImage: `url(${course.image_url})`, backgroundSize: 'cover', backgroundPosition: 'center', borderBottom: '1px solid var(--color-border)' }}>
+                      </div>
+                    ) : (
+                      <div style={{ width: '100%', height: 160, background: 'var(--primary-100)', display: 'flex', alignItems: 'center', justifyContent: 'center', borderBottom: '1px solid var(--color-border)' }}>
+                        <BookOpen size={48} color="var(--primary-300)" />
                       </div>
                     )}
-                    <div>
-                      <div style={{ fontSize: "0.75rem", color: "var(--primary-600)", fontWeight: 700, marginBottom: "0.25rem" }}>كورس دراسي</div>
+                    <div style={{ padding: "1.25rem", display: "flex", flexDirection: "column", gap: "1rem", flex: 1 }}>
+                      <div>
+                        <div style={{ fontSize: "0.75rem", color: "var(--primary-600)", fontWeight: 700, marginBottom: "0.25rem" }}>كورس دراسي</div>
                       <h3 style={{ fontWeight: 800, color: "var(--color-heading)", fontSize: "1.05rem", lineHeight: 1.4, overflow: "hidden", textOverflow: "ellipsis", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>
                         {course.title}
                       </h3>
                       <p style={{ color: "var(--color-text-muted)", fontSize: "0.85rem", marginTop: "0.5rem", overflow: "hidden", textOverflow: "ellipsis", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{course.description}</p>
                     </div>
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "auto" }}>
-                      <Link href={`/dashboard/courses/${course.id}`} className="btn btn-primary" style={{ padding: "0.5rem 1rem", fontSize: "0.85rem", borderRadius: "var(--radius-md)" }}>
-                        تصفح المحتوى
-                      </Link>
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "auto" }}>
+                        <Link href={`/dashboard/courses/${course.id}`} className="btn btn-primary" style={{ padding: "0.5rem 1rem", fontSize: "0.85rem", borderRadius: "var(--radius-md)", width: "100%", justifyContent: "center" }}>
+                          تصفح المحتوى
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 ))
