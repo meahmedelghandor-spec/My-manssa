@@ -22,6 +22,11 @@ export default function DashboardPage() {
   const [mistakesCount, setMistakesCount] = useState(0);
 
   useEffect(() => {
+    getUserProfile().then(profile => {
+      if(profile) {
+        setStudent(prev => ({ ...prev, name: profile.full_name || "طالب" }));
+      }
+    });
 
     getStudentDashboardStats().then(data => {
       setRecentLectures(data.recentLectures);

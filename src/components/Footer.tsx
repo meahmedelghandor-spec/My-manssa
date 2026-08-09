@@ -127,12 +127,10 @@ export default function Footer() {
           <p style={{ color: "var(--color-text-muted)", fontSize: "0.9rem" }}>
             خبرة أكثر من 25 سنة في تدريس الفيزياء •{" "}
             <a
-              href="https://abdelmaaboud.com"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="mailto:me.ahmedelghandor@gmail.com"
               style={{ color: "var(--primary-500)", fontWeight: 600 }}
             >
-              abdelmaaboud.com
+              me.ahmedelghandor@gmail.com
             </a>
           </p>
         </div>
