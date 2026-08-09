@@ -60,8 +60,6 @@ const defaultSocialLinks = [
   },
 ];
 
-];
-
 const defaultSupportLinks = [
   {
     icon: Phone,
