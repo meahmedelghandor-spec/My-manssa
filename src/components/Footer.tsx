@@ -10,7 +10,9 @@ import {
   Phone,
 } from "lucide-react";
 
-const socialLinks = [
+import { useEffect, useState } from "react";
+
+const defaultSocialLinks = [
   {
     icon: Facebook,
     label: "الصفحة الرسمية",
@@ -58,7 +60,9 @@ const socialLinks = [
   },
 ];
 
-const supportLinks = [
+];
+
+const defaultSupportLinks = [
   {
     icon: Phone,
     label: "قناة واتساب",
@@ -88,6 +92,39 @@ const supportLinks = [
 
 export default function Footer() {
   const year = new Date().getFullYear();
+  
+  const [dynTeacher, setDynTeacher] = useState({ name: "الأستاذ احمد الغندور", desc: "خبرة أكثر من 25 سنة في تدريس الفيزياء", email: "me.ahmedelghandor@gmail.com" });
+  const [dynSocial, setDynSocial] = useState(defaultSocialLinks);
+  const [dynSupport, setDynSupport] = useState(defaultSupportLinks);
+
+  useEffect(() => {
+    import("@/app/actions/landing").then(({ getLandingSettings }) => {
+      getLandingSettings().then(data => {
+         if (data.footer_settings) {
+            if (data.footer_settings.teacher_info) {
+              setDynTeacher(data.footer_settings.teacher_info);
+            }
+            if (data.footer_settings.socialLinks) {
+              setDynSocial(prev => prev.map((link, i) => ({
+                ...link,
+                label: data.footer_settings.socialLinks[i]?.label || link.label,
+                desc: data.footer_settings.socialLinks[i]?.desc || link.desc,
+                href: data.footer_settings.socialLinks[i]?.href || link.href,
+              })));
+            }
+            if (data.footer_settings.supportLinks) {
+              setDynSupport(prev => prev.map((link, i) => ({
+                ...link,
+                label: data.footer_settings.supportLinks[i]?.label || link.label,
+                desc: data.footer_settings.supportLinks[i]?.desc || link.desc,
+                href: data.footer_settings.supportLinks[i]?.href || link.href,
+                phone: data.footer_settings.supportLinks[i]?.phone || link.phone,
+              })));
+            }
+         }
+      });
+    });
+  }, []);
 
   return (
     <footer
@@ -120,17 +157,17 @@ export default function Footer() {
                   color: "var(--color-heading)",
                 }}
               >
-                الأستاذ احمد الغندور
+                {dynTeacher.name}
               </div>
             </div>
           </div>
           <p style={{ color: "var(--color-text-muted)", fontSize: "0.9rem" }}>
-            خبرة أكثر من 25 سنة في تدريس الفيزياء •{" "}
+            {dynTeacher.desc} •{" "}
             <a
-              href="mailto:me.ahmedelghandor@gmail.com"
+              href={`mailto:${dynTeacher.email}`}
               style={{ color: "var(--primary-500)", fontWeight: 600 }}
             >
-              me.ahmedelghandor@gmail.com
+              {dynTeacher.email}
             </a>
           </p>
         </div>
@@ -162,7 +199,7 @@ export default function Footer() {
               <Facebook size={14} /> فيسبوك
             </h4>
             <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-              {socialLinks
+              {dynSocial
                 .filter((s) => s.category === "فيسبوك")
                 .map((link) => (
                   <a
@@ -235,7 +272,7 @@ export default function Footer() {
               <Youtube size={14} /> فيديو وسوشيال
             </h4>
             <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-              {socialLinks
+              {dynSocial
                 .filter((s) => s.category === "فيديو وسوشيال")
                 .map((link) => (
                   <a
@@ -308,7 +345,7 @@ export default function Footer() {
               <Phone size={14} /> الدعم والتواصل
             </h4>
             <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-              {supportLinks.map((link) => (
+              {dynSupport.map((link) => (
                 <a
                   key={link.label}
                   href={link.href}

@@ -16,7 +16,25 @@ export default function LandingSettingsPage() {
 
   useEffect(() => {
     getLandingSettings().then((data) => {
-      setSettings((prev: any) => ({ ...prev, ...data }));
+      setSettings((prev: any) => ({ 
+        ...prev, 
+        ...data,
+        footer_settings: data.footer_settings || {
+          teacher_info: { name: "الأستاذ احمد الغندور", desc: "خبرة أكثر من 25 سنة في تدريس الفيزياء", email: "me.ahmedelghandor@gmail.com" },
+          socialLinks: [
+            { label: "الصفحة الرسمية", desc: "أي أخبار تفاصيل، معلومات مهمة هتبلغكم هناك", href: "#" },
+            { label: "جروب الطلاب", desc: "لو عندك أي استفسار علمي", href: "#" },
+            { label: "جروب الاستراحة", desc: "نفك شوية عن نفسنا من دوشة الفيزياء", href: "#" },
+            { label: "يوتيوب", desc: "أي كورس أو محاضرة مجانية أو فيديو توضيحي هينزل هناك", href: "#" },
+            { label: "إنستجرام", desc: "أخر التنبيهات والأخبار وصور محاضراتنا", href: "#" },
+          ],
+          supportLinks: [
+            { label: "قناة واتساب", desc: "أي أخبار أو تنبيهات أو معلومات هتنزل هناك", href: "#" },
+            { label: "دعم فني – تيليجرام", desc: "عندك مشكلة على المنصة؟ متقلقش هنساعدك فوراً", href: "#" },
+            { label: "دعم نفسي – واتساب", desc: "تحديد أفضل طرق المذاكرة وتنظيم الوقت", href: "#", phone: "01507200326" },
+          ]
+        }
+      }));
       setLoading(false);
     });
   }, []);
@@ -66,6 +84,28 @@ export default function LandingSettingsPage() {
     const newPackages = [...settings.packages];
     newPackages.splice(index, 1);
     setSettings((prev: any) => ({ ...prev, packages: newPackages }));
+  };
+
+  const handleFooterTeacherInfoChange = (field: string, value: string) => {
+    setSettings((prev: any) => ({
+      ...prev,
+      footer_settings: {
+        ...prev.footer_settings,
+        teacher_info: { ...prev.footer_settings?.teacher_info, [field]: value }
+      }
+    }));
+  };
+
+  const handleFooterSocialChange = (index: number, field: string, value: string) => {
+    const newLinks = [...(settings.footer_settings?.socialLinks || [])];
+    newLinks[index] = { ...newLinks[index], [field]: value };
+    setSettings((prev: any) => ({ ...prev, footer_settings: { ...prev.footer_settings, socialLinks: newLinks } }));
+  };
+
+  const handleFooterSupportChange = (index: number, field: string, value: string) => {
+    const newLinks = [...(settings.footer_settings?.supportLinks || [])];
+    newLinks[index] = { ...newLinks[index], [field]: value };
+    setSettings((prev: any) => ({ ...prev, footer_settings: { ...prev.footer_settings, supportLinks: newLinks } }));
   };
 
   if (loading) return <div>جاري التحميل...</div>;
@@ -228,6 +268,87 @@ export default function LandingSettingsPage() {
           <button onClick={addPackage} className="btn btn-outline" style={{ borderStyle: 'dashed', width: '100%' }}>
             <Plus size={16} /> إضافة باقة جديدة
           </button>
+        </div>
+      </section>
+
+      {/* ── FOOTER SETTINGS ────────────────────────────────────────────── */}
+      <section style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-xl)', padding: '1.5rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+          <h2 style={{ fontSize: '1.25rem', fontWeight: 800 }}>الفوتر وروابط التواصل</h2>
+          <button onClick={() => handleSave('footer_settings', settings.footer_settings)} className="btn btn-primary" style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius-full)' }}>
+            {saving === 'footer_settings' ? <CheckCircle size={16} /> : <Save size={16} />} حفظ التعديلات
+          </button>
+        </div>
+        
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+          {/* Teacher Info */}
+          <div>
+            <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '1rem', color: 'var(--color-heading)' }}>معلومات المعلم</h3>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem', background: 'var(--color-bg)', padding: '1rem', borderRadius: 'var(--radius-lg)' }}>
+              <div className="form-group">
+                <label className="form-label">الاسم</label>
+                <input type="text" className="form-input" value={settings.footer_settings?.teacher_info?.name || ''} onChange={e => handleFooterTeacherInfoChange('name', e.target.value)} />
+              </div>
+              <div className="form-group">
+                <label className="form-label">الوصف</label>
+                <input type="text" className="form-input" value={settings.footer_settings?.teacher_info?.desc || ''} onChange={e => handleFooterTeacherInfoChange('desc', e.target.value)} />
+              </div>
+              <div className="form-group">
+                <label className="form-label">البريد الإلكتروني / الرابط</label>
+                <input type="text" className="form-input" value={settings.footer_settings?.teacher_info?.email || ''} onChange={e => handleFooterTeacherInfoChange('email', e.target.value)} />
+              </div>
+            </div>
+          </div>
+
+          {/* Social Links */}
+          <div>
+            <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '1rem', color: 'var(--color-heading)' }}>روابط السوشيال ميديا</h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {settings.footer_settings?.socialLinks?.map((link: any, i: number) => (
+                <div key={i} style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', background: 'var(--color-bg)', padding: '1rem', borderRadius: 'var(--radius-lg)' }}>
+                  <div style={{flex: '1 1 200px'}}>
+                    <label className="form-label">الاسم ({link.label})</label>
+                    <input type="text" className="form-input" value={link.label} onChange={e => handleFooterSocialChange(i, 'label', e.target.value)} />
+                  </div>
+                  <div style={{flex: '1 1 200px'}}>
+                    <label className="form-label">الرابط (Link)</label>
+                    <input type="text" className="form-input" value={link.href} onChange={e => handleFooterSocialChange(i, 'href', e.target.value)} dir="ltr" />
+                  </div>
+                  <div style={{flex: '1 1 100%'}}>
+                    <label className="form-label">الوصف</label>
+                    <input type="text" className="form-input" value={link.desc} onChange={e => handleFooterSocialChange(i, 'desc', e.target.value)} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Support Links */}
+          <div>
+            <h3 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '1rem', color: 'var(--color-heading)' }}>أرقام وروابط الدعم</h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {settings.footer_settings?.supportLinks?.map((link: any, i: number) => (
+                <div key={i} style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', background: 'var(--color-bg)', padding: '1rem', borderRadius: 'var(--radius-lg)' }}>
+                  <div style={{flex: '1 1 200px'}}>
+                    <label className="form-label">الاسم ({link.label})</label>
+                    <input type="text" className="form-input" value={link.label} onChange={e => handleFooterSupportChange(i, 'label', e.target.value)} />
+                  </div>
+                  <div style={{flex: '1 1 200px'}}>
+                    <label className="form-label">الرابط (Link)</label>
+                    <input type="text" className="form-input" value={link.href} onChange={e => handleFooterSupportChange(i, 'href', e.target.value)} dir="ltr" />
+                  </div>
+                  <div style={{flex: '1 1 200px'}}>
+                    <label className="form-label">رقم الهاتف (اختياري)</label>
+                    <input type="text" className="form-input" value={link.phone || ''} onChange={e => handleFooterSupportChange(i, 'phone', e.target.value)} dir="ltr" />
+                  </div>
+                  <div style={{flex: '1 1 100%'}}>
+                    <label className="form-label">الوصف</label>
+                    <input type="text" className="form-input" value={link.desc} onChange={e => handleFooterSupportChange(i, 'desc', e.target.value)} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
