@@ -6,44 +6,8 @@ import { Video, Play, CheckCircle, Lock, Clock, Search, ChevronDown, ChevronUp, 
 import { getStudentTickets, getTicketMessages, createTicket, addMessageToTicket } from "@/app/actions/support";
 import { getUserProfile, logout } from "@/app/actions/auth";
 
-const sidebarLinks = [
-  { href: "/dashboard", label: "الرئيسية", icon: BarChart2, active: false },
-  { href: "/dashboard/lectures", label: "الكورسات والمحاضرات", icon: BookOpen, active: false },
-  { href: "/dashboard/exams", label: "الامتحانات", icon: FileText, active: false },
-  { href: "/dashboard/mistakes", label: "أخطائي", icon: AlertTriangle, active: false },
-  { href: "/dashboard/homework", label: "حل الواجب", icon: Play, active: false },
-  { href: "/dashboard/support", label: "الدعم العلمي", icon: MessageCircle, active: true },
-];
-
-function SidebarContent({ onClose, student }: { onClose?: () => void, student: any }) {
-  return (
-    <>
-      <div style={{ padding: "1.25rem 1.5rem", borderBottom: "1px solid var(--color-border)", display: "flex", alignItems: "center", gap: "0.75rem" }}>
-        <div style={{ width: 44, height: 44, borderRadius: "50%", background: "linear-gradient(135deg, var(--primary-100), var(--primary-200))", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.5rem", flexShrink: 0, border: "2px solid var(--primary-200)" }}>👨‍🎓</div>
-        <div style={{ minWidth: 0, flex: 1 }}>
-          <div style={{ fontWeight: 700, color: "var(--color-heading)", fontSize: "0.9rem", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{student.name}</div>
-          <div style={{ fontSize: "0.75rem", color: "var(--color-text-muted)" }}>{student.gradeLabel}</div>
-        </div>
-        {onClose && <button onClick={onClose} style={{ background: "none", border: "none", cursor: "pointer", color: "var(--color-text-muted)", display: "flex", padding: 4 }}><X size={18} /></button>}
-      </div>
-      <nav style={{ flex: 1, padding: "1rem 0.75rem", display: "flex", flexDirection: "column", gap: "0.25rem" }}>
-        {sidebarLinks.map((link) => (
-          <Link key={link.href} href={link.href} style={{ display: "flex", alignItems: "center", gap: "0.75rem", padding: "0.7rem 0.9rem", borderRadius: "var(--radius-md)", background: link.active ? "var(--primary-50)" : "transparent", color: link.active ? "var(--primary-600)" : "var(--color-text)", fontWeight: link.active ? 700 : 500, fontSize: "0.9rem", transition: "all var(--transition-fast)", borderInlineStart: link.active ? "3px solid var(--primary-500)" : "3px solid transparent" }}>
-            <link.icon size={18} />{link.label}
-          </Link>
-        ))}
-      </nav>
-      <div style={{ padding: "1rem 0.75rem", borderTop: "1px solid var(--color-border)", display: "flex", flexDirection: "column", gap: "0.25rem" }}>
-        <Link href="/dashboard/settings" style={{ display: "flex", alignItems: "center", gap: "0.75rem", padding: "0.65rem 0.9rem", borderRadius: "var(--radius-md)", color: "var(--color-text-muted)", fontWeight: 500, fontSize: "0.9rem" }}><Settings size={18} />الإعدادات</Link>
-        <button onClick={() => logout()} style={{ display: "flex", alignItems: "center", gap: "0.75rem", padding: "0.65rem 0.9rem", borderRadius: "var(--radius-md)", color: "#ef4444", fontWeight: 600, fontSize: "0.9rem", background: "none", border: "none", cursor: "pointer", width: "100%", textAlign: "right" }}><LogOut size={18} />تسجيل الخروج</button>
-      </div>
-    </>
-  );
-}
-
 export default function SupportPage() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [student, setStudent] = useState({ name: "جاري التحميل...", gradeLabel: "", id: "" });
+  const [studentId, setStudentId] = useState<string>("");
   
   const [tickets, setTickets] = useState<any[]>([]);
   const [selectedTicket, setSelectedTicket] = useState<any>(null);
@@ -56,14 +20,6 @@ export default function SupportPage() {
   const [replyText, setReplyText] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const getGradeLabel = (gId: string) => {
-    const grades: Record<string, string> = {
-      prep_1: 'الصف الأول الإعدادي', prep_2: 'الصف الثاني الإعدادي', prep_3: 'الصف الثالث الإعدادي',
-      sec_1: 'الصف الأول الثانوي', sec_2: 'الصف الثاني الثانوي', sec_3: 'الصف الثالث الثانوي'
-    };
-    return grades[gId] || gId;
-  };
-
   const loadTickets = async () => {
     const data = await getStudentTickets();
     setTickets(data);
@@ -72,7 +28,7 @@ export default function SupportPage() {
   useEffect(() => {
     getUserProfile().then(profile => {
       if(profile) {
-        setStudent({ id: profile.id, name: profile.full_name || "طالب", gradeLabel: getGradeLabel(profile.grade) + (profile.section === 'languages' ? ' (لغات)' : ' (عربي)') });
+        setStudentId(profile.id);
       }
     });
     loadTickets();
@@ -111,7 +67,7 @@ export default function SupportPage() {
     // Optimistic UI update
     const optimisticMsg = {
       id: Math.random().toString(),
-      sender_id: student.id,
+      sender_id: studentId,
       message: replyText,
       created_at: new Date().toISOString()
     };
@@ -126,23 +82,7 @@ export default function SupportPage() {
   };
 
   return (
-    <div style={{ minHeight: "100dvh", background: "var(--color-bg)", display: "flex", height: "100dvh", overflow: "hidden" }}>
-      {sidebarOpen && <div className="mob-overlay" onClick={() => setSidebarOpen(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.45)", zIndex: 40 }} />}
-      <aside className="mob-sidebar" style={{ position: "fixed", top: 0, insetInlineEnd: 0, height: "100dvh", width: 260, background: "var(--color-surface)", borderInlineStart: "1px solid var(--color-border)", display: "flex", flexDirection: "column", zIndex: 50, transition: "transform var(--transition-base)", transform: sidebarOpen ? "translateX(0)" : "translateX(105%)", overflowY: "auto" }}>
-        <SidebarContent onClose={() => setSidebarOpen(false)} student={student} />
-      </aside>
-      <aside className="desk-sidebar" style={{ width: 260, minHeight: "100dvh", background: "var(--color-surface)", borderInlineStart: "1px solid var(--color-border)", flexDirection: "column", flexShrink: 0, display: "none" }}>
-        <SidebarContent student={student} />
-      </aside>
-
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0, height: "100%" }}>
-        <header style={{ height: 64, background: "var(--color-surface)", borderBottom: "1px solid var(--color-border)", display: "flex", alignItems: "center", padding: "0 1.25rem", gap: "0.75rem", flexShrink: 0, zIndex: 30, boxShadow: "var(--shadow-sm)" }}>
-          <Link href="/" style={{ fontFamily: "var(--font-display)", fontWeight: 900, fontSize: "1.1rem", color: "var(--primary-600)", display: "flex", alignItems: "center", gap: "0.5rem" }}><span style={{ fontSize: "1.4rem" }}>👨‍🏫</span></Link>
-          <div style={{ flex: 1 }} />
-          <Link href="/dashboard/settings" style={{ width: 36, height: 36, borderRadius: "50%", background: "linear-gradient(135deg, var(--primary-100), var(--primary-200))", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.1rem", border: "2px solid var(--primary-200)" }}>👨‍🎓</Link>
-          <button onClick={() => setSidebarOpen(true)} className="mob-menu" style={{ width: 40, height: 40, borderRadius: "var(--radius-md)", border: "1.5px solid var(--color-border)", background: "var(--color-bg)", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "var(--color-text)" }}><Menu size={20} /></button>
-        </header>
-
+    <>
         <main style={{ flex: 1, display: "flex", overflow: "hidden", position: "relative" }}>
           
           {/* Tickets List */}
@@ -211,7 +151,7 @@ export default function SupportPage() {
               
               <div style={{ flex: 1, overflowY: "auto", padding: "1.5rem", display: "flex", flexDirection: "column", gap: "1rem" }}>
                 {messages.map(msg => {
-                  const isMine = msg.sender_id === student.id;
+                  const isMine = msg.sender_id === studentId;
                   return (
                     <div key={msg.id} style={{ display: "flex", flexDirection: "column", alignItems: isMine ? "flex-end" : "flex-start" }}>
                       <div style={{ 
@@ -249,22 +189,21 @@ export default function SupportPage() {
                       placeholder="اكتب رسالتك هنا..." 
                       style={{ flex: 1, borderRadius: "var(--radius-full)", padding: "0.75rem 1.25rem" }} 
                       value={replyText}
-                      onChange={(e) => setReplyText(e.target.value)}
+                      onChange={e => setReplyText(e.target.value)}
                     />
-                    <button type="submit" className="btn btn-primary" style={{ width: 44, height: 44, padding: 0, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                      <Send size={18} />
+                    <button type="submit" disabled={!replyText.trim()} className="btn btn-primary" style={{ width: 44, height: 44, borderRadius: "50%", padding: 0, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                      <Send size={18} style={{ transform: "translateX(-2px)" }} />
                     </button>
                   </form>
                 </div>
               ) : (
-                <div style={{ padding: "1rem", background: "#f1f5f9", borderTop: "1px solid var(--color-border)", textAlign: "center", color: "#64748b", fontSize: "0.9rem", fontWeight: 700 }}>
+                <div style={{ padding: "1rem", background: "var(--color-surface)", borderTop: "1px solid var(--color-border)", textAlign: "center", color: "var(--color-text-muted)", fontSize: "0.9rem" }}>
                   هذه التذكرة مغلقة ولا يمكن الرد عليها.
                 </div>
               )}
             </div>
           )}
         </main>
-      </div>
 
       {/* New Ticket Modal */}
       {showNewModal && (
@@ -288,24 +227,6 @@ export default function SupportPage() {
           </div>
         </div>
       )}
-
-      <style>{`
-        .mob-menu { display: flex !important; }
-        .desk-sidebar { display: none !important; }
-        .mob-sidebar { display: flex !important; }
-        .mob-back-btn { display: flex !important; }
-        
-        @media (min-width: 900px) {
-          .mob-menu { display: none !important; }
-          .mob-overlay { display: none !important; }
-          .mob-sidebar { display: none !important; }
-          .desk-sidebar { display: flex !important; }
-          
-          .chat-list-container { display: flex !important; max-width: 350px !important; }
-          .chat-area-container { display: flex !important; }
-          .mob-back-btn { display: none !important; }
-        }
-      `}</style>
-    </div>
+    </>
   );
 }

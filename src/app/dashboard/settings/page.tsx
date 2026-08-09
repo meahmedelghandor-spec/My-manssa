@@ -1,8 +1,8 @@
-﻿import Link from 'next/link';
+import Link from 'next/link';
 
 export default function PlaceholderPage() {
   return (
-    <div style={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'var(--color-bg)', padding: '2rem', textAlign: 'center' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '4rem 2rem', textAlign: 'center' }}>
       <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>🚀</div>
       <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: '2rem', color: 'var(--color-heading)', marginBottom: '1rem' }}>
         هذه الصفحة قيد التطوير

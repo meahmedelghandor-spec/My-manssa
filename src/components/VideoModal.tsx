@@ -27,6 +27,7 @@ export default function VideoModal({ videoUrl, isOpen, onClose }: VideoModalProp
   // URL Parsing Logic
   let embedUrl = videoUrl;
   let isVideoTag = false;
+  let isGoogleDrive = false;
 
   try {
     const url = new URL(videoUrl);
@@ -52,6 +53,7 @@ export default function VideoModal({ videoUrl, isOpen, onClose }: VideoModalProp
     }
     // Google Drive
     else if (url.hostname.includes('drive.google.com')) {
+      isGoogleDrive = true;
       // Matches /file/d/ID/view or /file/d/ID
       const match = url.pathname.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
       if (match && match[1]) {
@@ -127,15 +129,34 @@ export default function VideoModal({ videoUrl, isOpen, onClose }: VideoModalProp
             autoPlay
           />
         ) : (
-          <iframe
-            src={embedUrl}
-            width="100%"
-            height="100%"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            style={{ display: 'block' }}
-          ></iframe>
+          <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+            {isGoogleDrive && (
+              <div 
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                  width: '60px',
+                  height: '60px',
+                  background: 'transparent',
+                  zIndex: 5,
+                  cursor: 'default'
+                }} 
+                title="مشاهدة ممتعة"
+                onContextMenu={(e) => e.preventDefault()}
+              />
+            )}
+            <iframe
+              src={embedUrl}
+              width="100%"
+              height="100%"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              style={{ display: 'block', position: 'relative', zIndex: 1 }}
+              onContextMenu={(e) => e.preventDefault()}
+            ></iframe>
+          </div>
         )}
       </div>
     </div>

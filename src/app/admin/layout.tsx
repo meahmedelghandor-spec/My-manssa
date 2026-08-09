@@ -15,7 +15,8 @@ import {
   Bell,
   BookOpen,
   MessageCircle,
-  CreditCard
+  CreditCard,
+  Monitor
 } from "lucide-react";
 import { getUserProfile, logout } from "@/app/actions/auth";
 
@@ -28,6 +29,7 @@ const sidebarLinks = [
   { href: "/admin/support", label: "الدعم العلمي", icon: MessageCircle },
   { href: "/admin/payments", label: "المدفوعات", icon: CreditCard },
   { href: "/admin/settings", label: "الإعدادات", icon: Settings },
+  { href: "/admin/settings/landing", label: "إعدادات الواجهة", icon: Monitor },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

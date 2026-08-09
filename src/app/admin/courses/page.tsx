@@ -149,22 +149,58 @@ export default function AdminCoursesPage() {
           </div>
         ) : (
           courses.map(course => (
-            <Link href={`/admin/courses/${course.id}`} key={course.id} style={{ display: 'flex', flexDirection: 'column', background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-xl)', overflow: 'hidden', textDecoration: 'none', color: 'inherit', transition: 'transform 0.2s, box-shadow 0.2s' }} className="hover-card">
-              {course.image_url ? (
-                <div style={{ width: '100%', height: 160, backgroundImage: `url(${course.image_url})`, backgroundSize: 'cover', backgroundPosition: 'center', borderBottom: '1px solid var(--color-border)' }} />
-              ) : (
-                <div style={{ width: '100%', height: 160, background: 'var(--primary-100)', display: 'flex', alignItems: 'center', justifyContent: 'center', borderBottom: '1px solid var(--color-border)' }}>
-                  <ImageIcon size={48} color="var(--primary-300)" />
-                </div>
-              )}
+            <Link 
+              href={`/admin/courses/${course.id}`} 
+              key={course.id} 
+              style={{ 
+                display: 'flex', 
+                flexDirection: 'column', 
+                background: 'var(--color-surface)', 
+                border: '1px solid var(--color-border)', 
+                borderRadius: 'var(--radius-xl)', 
+                overflow: 'hidden', 
+                textDecoration: 'none', 
+                color: 'inherit', 
+                transition: "all 0.3s ease",
+                boxShadow: "var(--shadow-sm)",
+                position: 'relative'
+              }} 
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)";
+                (e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow-lg)";
+                (e.currentTarget as HTMLElement).style.borderColor = "var(--primary-300)";
+                const img = e.currentTarget.querySelector('.admin-course-img') as HTMLElement;
+                if(img) img.style.transform = 'scale(1.05)';
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+                (e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow-sm)";
+                (e.currentTarget as HTMLElement).style.borderColor = "var(--color-border)";
+                const img = e.currentTarget.querySelector('.admin-course-img') as HTMLElement;
+                if(img) img.style.transform = 'scale(1)';
+              }}
+            >
+              <div style={{ position: 'relative', width: '100%', height: 160, overflow: 'hidden' }}>
+                {course.image_url ? (
+                  <div className="admin-course-img" style={{ width: '100%', height: '100%', backgroundImage: `url(${course.image_url})`, backgroundSize: 'cover', backgroundPosition: 'center', transition: 'transform 0.5s ease' }} />
+                ) : (
+                  <div className="admin-course-img" style={{ width: '100%', height: '100%', background: 'linear-gradient(135deg, var(--primary-500), var(--primary-700))', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'transform 0.5s ease' }}>
+                    <BookOpen size={48} color="rgba(255,255,255,0.5)" />
+                  </div>
+                )}
+                
+                {/* Gradient Overlay */}
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 70%)', pointerEvents: 'none' }} />
+              </div>
+
               <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flex: 1 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
                   <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.1rem', color: 'var(--color-heading)' }}>
                     {course.title}
                   </h3>
                   <div style={{ display: 'flex', gap: '0.5rem', position: 'relative', zIndex: 10 }}>
-                    <button onClick={(e) => { e.preventDefault(); handleEditClick(course); }} style={{ background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer' }} title="تعديل"><Edit2 size={16} /></button>
-                    <button onClick={(e) => { e.preventDefault(); handleDeleteClick(course.id); }} style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer' }} title="حذف"><Trash2 size={16} /></button>
+                    <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleEditClick(course); }} style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)', color: 'var(--color-text-muted)', cursor: 'pointer', width: 32, height: 32, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s' }} onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--primary-600)')} onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--color-text-muted)')} title="تعديل"><Edit2 size={14} /></button>
+                    <button onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleDeleteClick(course.id); }} style={{ background: '#fef2f2', border: '1px solid #fecaca', color: '#ef4444', cursor: 'pointer', width: 32, height: 32, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s' }} onMouseEnter={(e) => (e.currentTarget.style.background = '#fee2e2')} onMouseLeave={(e) => (e.currentTarget.style.background = '#fef2f2')} title="حذف"><Trash2 size={14} /></button>
                   </div>
                 </div>
                 <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', flex: 1, marginBottom: '1.5rem', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>

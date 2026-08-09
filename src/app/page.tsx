@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
 import { getRecentCourses } from "@/app/actions/courses";
+import { getLandingSettings } from "@/app/actions/landing";
 import {
   Video,
   FileText,
@@ -208,11 +209,13 @@ function FaqItem({ q, a }: { q: string; a: string }) {
   return (
     <div
       style={{
-        border: "1px solid var(--color-border)",
+        border: open ? "1px solid var(--primary-300)" : "1px solid var(--color-border)",
         borderRadius: "var(--radius-lg)",
         overflow: "hidden",
         transition: "all var(--transition-base)",
-        background: "var(--color-surface)",
+        background: open ? "var(--color-surface)" : "rgba(255, 255, 255, 0.4)",
+        boxShadow: open ? "0 4px 20px rgba(99,102,241,0.1)" : "none",
+        marginBottom: "1rem"
       }}
     >
       <button
@@ -222,39 +225,49 @@ function FaqItem({ q, a }: { q: string; a: string }) {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          padding: "1.1rem 1.25rem",
+          padding: "1.25rem 1.5rem",
           background: "transparent",
           border: "none",
           cursor: "pointer",
           fontFamily: "var(--font-sans)",
-          fontWeight: 700,
-          fontSize: "0.9375rem",
-          color: "var(--color-heading)",
+          fontWeight: 800,
+          fontSize: "1rem",
+          color: open ? "var(--primary-700)" : "var(--color-heading)",
           textAlign: "start",
-          gap: "0.75rem",
+          gap: "1rem",
+          transition: "color var(--transition-fast)"
         }}
       >
         <span>{q}</span>
-        <ChevronDown
-          size={18}
-          style={{
-            transform: open ? "rotate(180deg)" : "rotate(0)",
-            transition: "transform var(--transition-fast)",
-            flexShrink: 0,
-            color: "var(--primary-500)",
-          }}
-        />
+        <div style={{
+          width: 28,
+          height: 28,
+          borderRadius: "50%",
+          background: open ? "var(--primary-100)" : "var(--color-bg)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexShrink: 0,
+          transition: "background var(--transition-fast)"
+        }}>
+          <ChevronDown
+            size={16}
+            style={{
+              transform: open ? "rotate(180deg)" : "rotate(0)",
+              transition: "transform var(--transition-base)",
+              color: open ? "var(--primary-600)" : "var(--color-text-muted)",
+            }}
+          />
+        </div>
       </button>
       {open && (
         <div
           style={{
-            padding: "0 1.25rem 1.1rem",
-            color: "var(--color-text-muted)",
-            fontSize: "0.9rem",
-            lineHeight: 1.75,
-            borderTop: "1px solid var(--color-border)",
-            paddingTop: "1rem",
-            animation: "fadeInUp 0.2s ease",
+            padding: "0 1.5rem 1.5rem",
+            color: "var(--color-text)",
+            fontSize: "0.95rem",
+            lineHeight: 1.8,
+            animation: "fadeInUp 0.3s ease",
           }}
         >
           {a}
@@ -269,43 +282,45 @@ function StudentCard({ student }: { student: typeof topStudents2026[0] }) {
   return (
     <div
       style={{
-        background: "var(--color-surface)",
-        border: "1px solid var(--color-border)",
-        borderRadius: "var(--radius-lg)",
-        padding: "1.25rem",
+        background: "rgba(255, 255, 255, 0.7)",
+        backdropFilter: "blur(12px)",
+        border: "1px solid rgba(255, 255, 255, 0.8)",
+        borderRadius: "var(--radius-xl)",
+        padding: "1.5rem",
         textAlign: "center",
         transition: "all var(--transition-base)",
         position: "relative",
         overflow: "hidden",
+        boxShadow: "0 10px 30px rgba(0,0,0,0.03)"
       }}
       onMouseEnter={(e) => {
-        (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)";
-        (e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow-xl)";
+        (e.currentTarget as HTMLElement).style.transform = "translateY(-8px)";
+        (e.currentTarget as HTMLElement).style.boxShadow = "0 20px 40px rgba(99,102,241,0.15)";
         (e.currentTarget as HTMLElement).style.borderColor = "var(--primary-300)";
       }}
       onMouseLeave={(e) => {
         (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
-        (e.currentTarget as HTMLElement).style.boxShadow = "none";
-        (e.currentTarget as HTMLElement).style.borderColor = "var(--color-border)";
+        (e.currentTarget as HTMLElement).style.boxShadow = "0 10px 30px rgba(0,0,0,0.03)";
+        (e.currentTarget as HTMLElement).style.borderColor = "rgba(255, 255, 255, 0.8)";
       }}
     >
       {/* Rank badge */}
       <div
         style={{
           position: "absolute",
-          top: "0.75rem",
-          insetInlineStart: "0.75rem",
-          width: 36,
-          height: 36,
+          top: "1rem",
+          insetInlineStart: "1rem",
+          width: 32,
+          height: 32,
           borderRadius: "50%",
           background: "linear-gradient(135deg, #f59e0b, #fbbf24)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           fontWeight: 900,
-          fontSize: "1rem",
+          fontSize: "0.9rem",
           color: "#fff",
-          boxShadow: "0 2px 8px rgba(245,158,11,0.4)",
+          boxShadow: "0 2px 10px rgba(245,158,11,0.5)",
         }}
       >
         {student.rankNum}
@@ -317,13 +332,14 @@ function StudentCard({ student }: { student: typeof topStudents2026[0] }) {
           width: 80,
           height: 80,
           borderRadius: "50%",
-          background: "linear-gradient(135deg, var(--primary-100), var(--primary-200))",
+          background: "linear-gradient(135deg, var(--primary-100), var(--primary-300))",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          margin: "0 auto 1rem",
-          border: "3px solid var(--primary-200)",
-          fontSize: "2rem",
+          margin: "0 auto 1.25rem",
+          border: "4px solid #fff",
+          fontSize: "2.2rem",
+          boxShadow: "0 8px 20px rgba(99,102,241,0.2)"
         }}
       >
         🎓
@@ -371,8 +387,27 @@ export default function HomePage() {
   const [studentsTab, setStudentsTab] = useState<"2026" | "2025">("2026");
   const [recentCourses, setRecentCourses] = useState<any[]>([]);
 
+  // Add state for dynamic content
+  const [dynTopStudents2026, setDynTopStudents2026] = useState<any[]>(topStudents2026);
+  const [dynTopStudents2025, setDynTopStudents2025] = useState<any[]>(topStudents2025);
+  const [dynCountdown, setDynCountdown] = useState<any>({
+    targetDate: "2026-08-08T00:00:00",
+    titlePart1: "أستنوا الكورس التأسيسي هيكون متاح يوم",
+    titleHighlight: "السبت 8-8",
+    titlePart2: "-2026",
+    subtitle: "اشترك دلوقتي وكن أول واحد يوصله مجاناً!",
+    visible: true
+  });
+  const [dynPackages, setDynPackages] = useState<any[]>(packages);
+
   useEffect(() => {
     getRecentCourses().then(data => setRecentCourses(data));
+    getLandingSettings().then(data => {
+      if (data.top_students_2026) setDynTopStudents2026(data.top_students_2026);
+      if (data.top_students_2025) setDynTopStudents2025(data.top_students_2025);
+      if (data.countdown_timer) setDynCountdown(data.countdown_timer);
+      if (data.packages) setDynPackages(data.packages);
+    });
   }, []);
 
   const toggleDark = () => {
@@ -382,8 +417,7 @@ export default function HomePage() {
     });
   };
 
-  // Countdown to 8-8-2026
-  const targetDate = new Date("2026-08-08T00:00:00");
+  const targetDate = new Date(dynCountdown.targetDate || "2026-08-08T00:00:00");
 
   return (
     <div style={{ minHeight: "100dvh", display: "flex", flexDirection: "column" }}>
@@ -397,157 +431,161 @@ export default function HomePage() {
             minHeight: "calc(100dvh - var(--navbar-h))",
             display: "flex",
             alignItems: "center",
-            background: "var(--color-bg)",
+            background: "linear-gradient(135deg, var(--color-bg) 0%, #e0e7ff 100%)",
             position: "relative",
             overflow: "hidden",
+            padding: "4rem 0"
           }}
         >
           {/* Background decoration */}
           <div
             style={{
               position: "absolute",
-              top: "10%",
-              insetInlineEnd: "-5%",
-              width: 400,
-              height: 400,
+              top: "-10%",
+              insetInlineEnd: "-10%",
+              width: 600,
+              height: 600,
               borderRadius: "50%",
-              background: "radial-gradient(circle, rgba(99,102,241,0.08) 0%, transparent 70%)",
+              background: "radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%)",
               pointerEvents: "none",
             }}
           />
           <div
             style={{
               position: "absolute",
-              bottom: "5%",
-              insetInlineStart: "-5%",
-              width: 300,
-              height: 300,
+              bottom: "-10%",
+              insetInlineStart: "-10%",
+              width: 500,
+              height: 500,
               borderRadius: "50%",
-              background: "radial-gradient(circle, rgba(20,184,166,0.06) 0%, transparent 70%)",
+              background: "radial-gradient(circle, rgba(20,184,166,0.15) 0%, transparent 70%)",
               pointerEvents: "none",
             }}
           />
 
-          <div className="container" style={{ padding: "3rem 1.25rem" }}>
-            <div style={{ textAlign: "center", maxWidth: 700, margin: "0 auto", animation: "fadeInUp 0.6s ease both" }}>
-
-              {/* Welcome badge */}
-              <div
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "0.5rem",
-                  padding: "0.4rem 1rem",
-                  borderRadius: "var(--radius-full)",
-                  background: "var(--primary-50)",
-                  border: "1px solid var(--primary-200)",
-                  color: "var(--primary-700)",
-                  fontWeight: 700,
-                  fontSize: "0.875rem",
-                  marginBottom: "1.5rem",
-                }}
-              >
-                🎓 دفعة 2027
-              </div>
-
-              {/* Title */}
-              <h1
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontWeight: 900,
-                  fontSize: "clamp(2rem, 6vw, 3rem)",
-                  color: "var(--color-heading)",
-                  lineHeight: 1.3,
-                  marginBottom: "1rem",
-                }}
-              >
-                أهلًا بيكم منورين المنصة
-                <span style={{ color: "var(--primary-500)" }}>!</span>
-              </h1>
-
-              {/* Description */}
-              <p
-                style={{
-                  fontSize: "clamp(0.95rem, 2vw, 1.1rem)",
-                  color: "var(--color-text-muted)",
-                  lineHeight: 1.8,
-                  marginBottom: "1rem",
-                }}
-              >
-                مع الأستاذ{" "}
-                <strong style={{ color: "var(--color-heading)" }}>احمد الغندور</strong>
-                . خبرة تتجاوز{" "}
-                <strong style={{ color: "var(--primary-500)" }}>27 سنة</strong>{" "}
-                في تدريس الفيزياء للثانوية العامة، والاف الطلاب حققوا التفوق والدرجات النهائية.
-              </p>
-
-              <p
-                style={{
-                  fontSize: "1rem",
-                  color: "var(--color-text-muted)",
-                  lineHeight: 1.8,
-                  marginBottom: "2.5rem",
-                }}
-              >
-                هتتعلم الفيزياء بأسلوب بسيط وعملي، مع شرح احترافي، وتجارب تعليمية حديثة، وتدريب شامل على أحدث أنماط الأسئلة، علشان تدخل الامتحان وأنت جاهز تحقق أفضل نتيجة.
-              </p>
-
-              {/* CTA Buttons */}
-              <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
-                <Link href="/register" className="btn btn-primary btn-lg">
-                  👤 إنشاء حساب
-                </Link>
-                <Link href="/login" className="btn btn-ghost btn-lg">
-                  تسجيل الدخول
-                </Link>
-              </div>
-            </div>
-
-            {/* Teacher image placeholder */}
+          <div className="container" style={{ position: "relative", zIndex: 10 }}>
             <div
               style={{
-                display: "flex",
-                justifyContent: "center",
-                marginTop: "3rem",
-                animation: "float 4s ease-in-out infinite",
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+                gap: "3rem",
+                alignItems: "center",
               }}
             >
-              <div
-                style={{
-                  width: 220,
-                  height: 220,
-                  borderRadius: "50%",
-                  background: "linear-gradient(135deg, var(--primary-100) 0%, var(--primary-200) 100%)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: "6rem",
-                  border: "4px solid var(--primary-200)",
-                  boxShadow: "0 20px 60px rgba(99,102,241,0.2)",
-                  position: "relative",
-                }}
-              >
-                👨‍🏫
-                {/* Physics badge */}
+              {/* Text Content */}
+              <div style={{ animation: "fadeInUp 0.6s ease both" }}>
+                {/* Welcome badge */}
                 <div
                   style={{
-                    position: "absolute",
-                    bottom: 10,
-                    insetInlineEnd: -10,
-                    width: 60,
-                    height: 60,
-                    borderRadius: "50%",
-                    background: "linear-gradient(135deg, #f59e0b, #fbbf24)",
-                    display: "flex",
+                    display: "inline-flex",
                     alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "1.8rem",
-                    boxShadow: "var(--shadow-lg)",
-                    border: "3px solid #fff",
+                    gap: "0.5rem",
+                    padding: "0.5rem 1.25rem",
+                    borderRadius: "var(--radius-full)",
+                    background: "rgba(255, 255, 255, 0.6)",
+                    backdropFilter: "blur(10px)",
+                    border: "1px solid rgba(255,255,255,0.8)",
+                    color: "var(--primary-700)",
+                    fontWeight: 800,
+                    fontSize: "0.875rem",
+                    marginBottom: "1.5rem",
+                    boxShadow: "var(--shadow-sm)"
                   }}
                 >
-                  ⚛️
+                  <span style={{ fontSize: "1.2rem" }}>🎓</span> الأقوى في الفيزياء لدفعة 2027
                 </div>
+
+                {/* Title */}
+                <h1
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontWeight: 900,
+                    fontSize: "clamp(2.5rem, 5vw, 4rem)",
+                    color: "var(--color-heading)",
+                    lineHeight: 1.2,
+                    marginBottom: "1.25rem",
+                    textShadow: "0 2px 10px rgba(0,0,0,0.05)"
+                  }}
+                >
+                  أهلاً بك في <br/>
+                  <span style={{ 
+                    background: "linear-gradient(90deg, var(--primary-600), var(--accent-500))", 
+                    WebkitBackgroundClip: "text", 
+                    WebkitTextFillColor: "transparent" 
+                  }}>
+                    منصة التفوق
+                  </span>
+                </h1>
+
+                {/* Description */}
+                <p
+                  style={{
+                    fontSize: "clamp(1rem, 2vw, 1.2rem)",
+                    color: "var(--color-text)",
+                    lineHeight: 1.8,
+                    marginBottom: "1rem",
+                    fontWeight: 500,
+                  }}
+                >
+                  مع الأستاذ{" "}
+                  <strong style={{ color: "var(--primary-700)", fontWeight: 800 }}>احمد الغندور</strong>
+                  . خبرة تتجاوز{" "}
+                  <strong style={{ color: "var(--accent-500)", fontWeight: 800 }}>27 سنة</strong>{" "}
+                  في تدريس الفيزياء للثانوية العامة، وآلاف الطلاب حققوا التفوق والدرجات النهائية.
+                </p>
+
+                <p
+                  style={{
+                    fontSize: "1rem",
+                    color: "var(--color-text-muted)",
+                    lineHeight: 1.8,
+                    marginBottom: "2.5rem",
+                  }}
+                >
+                  هتتعلم الفيزياء بأسلوب بسيط وعملي، مع شرح احترافي، وتجارب تعليمية حديثة، وتدريب شامل على أحدث أنماط الأسئلة.
+                </p>
+
+                {/* CTA Buttons */}
+                <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+                  <Link href="/register" className="btn btn-primary btn-lg" style={{ padding: "1rem 2.5rem", fontSize: "1.1rem", borderRadius: "var(--radius-full)" }}>
+                    🚀 ابدأ الآن مجاناً
+                  </Link>
+                  <Link href="/login" className="btn btn-ghost btn-lg" style={{ padding: "1rem 2.5rem", fontSize: "1.1rem", borderRadius: "var(--radius-full)", background: "rgba(255,255,255,0.7)", backdropFilter: "blur(10px)" }}>
+                    تسجيل الدخول
+                  </Link>
+                </div>
+              </div>
+
+              {/* Graphic/Image */}
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  animation: "float 6s ease-in-out infinite",
+                  position: "relative"
+                }}
+              >
+                <div style={{
+                  position: "absolute",
+                  width: "100%",
+                  height: "100%",
+                  background: "radial-gradient(circle, rgba(99,102,241,0.2) 0%, transparent 70%)",
+                  filter: "blur(40px)",
+                  zIndex: 0
+                }} />
+                
+                <img 
+                  src="/images/physics-hero.png" 
+                  alt="Physics Hero Illustration" 
+                  style={{ 
+                    width: "100%", 
+                    maxWidth: 550, 
+                    position: "relative", 
+                    zIndex: 1,
+                    filter: "drop-shadow(0 20px 40px rgba(0,0,0,0.1))"
+                  }} 
+                />
               </div>
             </div>
           </div>
@@ -609,7 +647,7 @@ export default function HomePage() {
                 gap: "1.25rem",
               }}
             >
-              {(studentsTab === "2026" ? topStudents2026 : topStudents2025).map((s) => (
+              {(studentsTab === "2026" ? dynTopStudents2026 : dynTopStudents2025).map((s) => (
                 <StudentCard key={s.name} student={s} />
               ))}
             </div>
@@ -617,6 +655,7 @@ export default function HomePage() {
         </section>
 
         {/* ── COUNTDOWN ───────────────────────────────────────────────────── */}
+        {dynCountdown.visible && (
         <section
           className="section"
           style={{
@@ -628,11 +667,11 @@ export default function HomePage() {
               className="section-title"
               style={{ marginBottom: "0.5rem" }}
             >
-              أستنوا الكورس التأسيسي هيكون متاح يوم{" "}
-              <span style={{ color: "#ef4444" }}>السبت 8-8</span>-2026
+              {dynCountdown.titlePart1}{" "}
+              <span style={{ color: "#ef4444" }}>{dynCountdown.titleHighlight}</span>{dynCountdown.titlePart2}
             </h2>
             <p className="section-subtitle" style={{ marginBottom: "2.5rem" }}>
-              اشترك دلوقتي وكن أول واحد يوصله مجاناً!
+              {dynCountdown.subtitle}
             </p>
 
             <CountdownTimer targetDate={targetDate} />
@@ -644,6 +683,7 @@ export default function HomePage() {
             </div>
           </div>
         </section>
+        )}
 
         {/* ── LATEST COURSES ─────────────────────────────────────────────────── */}
         <section className="section" style={{ background: "var(--color-surface)" }}>
@@ -675,68 +715,86 @@ export default function HomePage() {
                 </div>
               ) : (
                 recentCourses.map((course) => (
-                  <div
+                  <Link 
                     key={course.id}
-                    className="card"
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      transition: "transform var(--transition-base), box-shadow var(--transition-base)",
-                      cursor: "pointer",
-                      border: "1px solid var(--color-border)",
-                      borderRadius: "var(--radius-xl)",
-                      overflow: "hidden"
+                    href="/register" 
+                    style={{ 
+                      background: "var(--color-surface)", 
+                      border: "1px solid var(--color-border)", 
+                      borderRadius: "var(--radius-xl)", 
+                      display: "flex", 
+                      flexDirection: "column", 
+                      overflow: "hidden", 
+                      transition: "all 0.3s ease",
+                      textDecoration: "none",
+                      boxShadow: "var(--shadow-md)",
+                      position: "relative"
                     }}
                     onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)";
-                      (e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow-lg)";
+                      (e.currentTarget as HTMLElement).style.transform = "translateY(-6px)";
+                      (e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow-xl)";
                       (e.currentTarget as HTMLElement).style.borderColor = "var(--primary-300)";
+                      const img = e.currentTarget.querySelector('.course-img') as HTMLElement;
+                      if(img) img.style.transform = 'scale(1.05)';
                     }}
                     onMouseLeave={(e) => {
                       (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
                       (e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow-md)";
                       (e.currentTarget as HTMLElement).style.borderColor = "var(--color-border)";
+                      const img = e.currentTarget.querySelector('.course-img') as HTMLElement;
+                      if(img) img.style.transform = 'scale(1)';
                     }}
                   >
-                    {course.image_url ? (
-                      <div style={{ width: '100%', height: 180, backgroundImage: `url(${course.image_url})`, backgroundSize: 'cover', backgroundPosition: 'center', borderBottom: '1px solid var(--color-border)' }} />
-                    ) : (
-                      <div style={{ width: '100%', height: 180, background: 'var(--primary-100)', display: 'flex', alignItems: 'center', justifyContent: 'center', borderBottom: '1px solid var(--color-border)' }}>
-                        <span style={{ fontSize: '3rem' }}>📚</span>
-                      </div>
-                    )}
-                    <div style={{ padding: "1.5rem", display: "flex", flexDirection: "column", flex: 1 }}>
-                      <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1rem" }}>
-                        <span style={{ background: "var(--primary-50)", color: "var(--primary-600)", padding: "0.25rem 0.75rem", borderRadius: "var(--radius-full)", fontSize: "0.75rem", fontWeight: 700 }}>
+                    <div style={{ position: 'relative', width: '100%', height: 200, overflow: 'hidden' }}>
+                      {course.image_url ? (
+                        <div className="course-img" style={{ width: '100%', height: '100%', backgroundImage: `url(${course.image_url})`, backgroundSize: 'cover', backgroundPosition: 'center', transition: 'transform 0.5s ease' }} />
+                      ) : (
+                        <div className="course-img" style={{ width: '100%', height: '100%', background: 'linear-gradient(135deg, var(--primary-500), var(--primary-700))', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'transform 0.5s ease' }}>
+                          <BookOpen size={48} color="rgba(255,255,255,0.5)" />
+                        </div>
+                      )}
+                      
+                      {/* Gradient Overlay for Text Readability */}
+                      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 60%)' }} />
+
+                      {/* Floating Badges */}
+                      <div style={{ position: 'absolute', top: '1rem', right: '1rem', display: 'flex', gap: '0.5rem', zIndex: 2 }}>
+                        <span style={{ background: "rgba(255,255,255,0.9)", color: "var(--primary-700)", padding: "0.3rem 0.8rem", borderRadius: "var(--radius-full)", fontSize: "0.75rem", fontWeight: 800, backdropFilter: "blur(4px)", boxShadow: "0 2px 4px rgba(0,0,0,0.1)" }}>
                           {course.grade === 'prep_1' ? 'أولى إعدادي' : course.grade === 'prep_2' ? 'ثانية إعدادي' : course.grade === 'prep_3' ? 'ثالثة إعدادي' : course.grade === 'sec_1' ? 'أولى ثانوي' : course.grade === 'sec_2' ? 'ثانية ثانوي' : 'ثالثة ثانوي'}
                         </span>
-                        <span style={{ background: course.section === 'languages' ? '#fdf4ff' : '#ecfdf5', color: course.section === 'languages' ? '#c026d3' : '#059669', padding: "0.25rem 0.75rem", borderRadius: "var(--radius-full)", fontSize: "0.75rem", fontWeight: 700 }}>
+                        <span style={{ background: course.section === 'languages' ? 'rgba(192,38,211,0.9)' : 'rgba(5,150,105,0.9)', color: "#fff", padding: "0.3rem 0.8rem", borderRadius: "var(--radius-full)", fontSize: "0.75rem", fontWeight: 800, backdropFilter: "blur(4px)", boxShadow: "0 2px 4px rgba(0,0,0,0.1)" }}>
                           {course.section === 'languages' ? 'لغات' : 'عربي'}
                         </span>
                       </div>
+                    </div>
+
+                    <div style={{ padding: "1.5rem", display: "flex", flexDirection: "column", flex: 1 }}>
                       <h3
                         style={{
                           fontFamily: "var(--font-display)",
                           fontWeight: 800,
                           fontSize: "1.2rem",
                           color: "var(--color-heading)",
-                          marginBottom: "0.5rem",
+                          marginBottom: "0.75rem",
                           lineHeight: 1.4
                         }}
                       >
                         {course.title}
                       </h3>
-                      <p style={{ color: "var(--color-text-muted)", fontSize: "0.9rem", flex: 1, marginBottom: "1.5rem", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
-                        {course.description || "لا يوجد وصف لهذا الكورس."}
+                      <p style={{ color: "var(--color-text-muted)", fontSize: "0.95rem", flex: 1, marginBottom: "1.5rem", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", lineHeight: 1.6 }}>
+                        {course.description || "لا يوجد وصف متاح لهذا الكورس."}
                       </p>
+                      
                       <div style={{ paddingTop: "1rem", borderTop: "1px solid var(--color-border)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                        <span style={{ fontWeight: 800, color: "var(--primary-600)", fontSize: "1.1rem" }}>اشترك الآن</span>
-                        <Link href="/register" className="btn btn-primary" style={{ padding: "0.5rem 1rem", borderRadius: "var(--radius-full)", fontSize: "0.85rem" }}>
-                          التفاصيل
-                        </Link>
+                        <span style={{ fontWeight: 800, color: "var(--primary-600)", fontSize: "1rem", display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                          اشترك الآن <span style={{fontSize: '1.2rem'}}>✨</span>
+                        </span>
+                        <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'var(--primary-50)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary-600)' }}>
+                           <ChevronDown size={18} style={{ transform: 'rotate(90deg)' }} />
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 ))
               )}
             </div>
@@ -744,94 +802,121 @@ export default function HomePage() {
         </section>
 
         {/* ── FEATURES ─────────────────────────────────────────────────────── */}
-        <section className="section" style={{ background: "var(--color-bg)" }}>
+        <section className="section" style={{ background: "linear-gradient(to bottom, var(--color-surface), #f8fafc)" }}>
           <div className="container">
             <h2 className="section-title" style={{ marginBottom: "0.5rem" }}>
-              فحتوى علمي متكامل
+              محتوى علمي متكامل
             </h2>
             <p className="section-subtitle" style={{ marginBottom: "3rem" }}>
-              كل حاجة محتاجاها في مكان واحد
+              كل حاجة محتاجها في مكان واحد
             </p>
 
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(290px, 1fr))",
-                gap: "1.25rem",
+                gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+                gap: "2rem",
               }}
             >
-              {features.map((feature) => (
+              {features.map((feature, idx) => (
                 <div
                   key={feature.title}
                   style={{
-                    background: "var(--color-surface)",
-                    border: "1px solid var(--color-border)",
-                    borderRadius: "var(--radius-lg)",
-                    padding: "1.5rem",
+                    background: "rgba(255, 255, 255, 0.6)",
+                    backdropFilter: "blur(12px)",
+                    border: "1px solid rgba(255, 255, 255, 0.8)",
+                    borderRadius: "var(--radius-xl)",
+                    padding: "2rem",
                     transition: "all var(--transition-base)",
+                    boxShadow: "0 10px 30px rgba(0,0,0,0.03)",
+                    position: "relative",
+                    overflow: "hidden"
                   }}
                   onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)";
-                    (e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow-xl)";
-                    (e.currentTarget as HTMLElement).style.borderColor = feature.color + "60";
+                    (e.currentTarget as HTMLElement).style.transform = "translateY(-8px)";
+                    (e.currentTarget as HTMLElement).style.boxShadow = `0 20px 40px ${feature.color}30`;
+                    (e.currentTarget as HTMLElement).style.borderColor = feature.color + "50";
                   }}
                   onMouseLeave={(e) => {
                     (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
-                    (e.currentTarget as HTMLElement).style.boxShadow = "none";
-                    (e.currentTarget as HTMLElement).style.borderColor = "var(--color-border)";
+                    (e.currentTarget as HTMLElement).style.boxShadow = "0 10px 30px rgba(0,0,0,0.03)";
+                    (e.currentTarget as HTMLElement).style.borderColor = "rgba(255, 255, 255, 0.8)";
                   }}
                 >
+                  {/* Decorative Background Blob */}
+                  <div style={{
+                    position: "absolute",
+                    top: "-20px",
+                    right: "-20px",
+                    width: 100,
+                    height: 100,
+                    background: `radial-gradient(circle, ${feature.color}15 0%, transparent 70%)`,
+                    borderRadius: "50%",
+                    zIndex: 0
+                  }} />
+
                   <div
                     style={{
-                      width: 52,
-                      height: 52,
-                      borderRadius: "var(--radius-md)",
+                      width: 60,
+                      height: 60,
+                      borderRadius: "var(--radius-lg)",
                       background: feature.bg,
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      marginBottom: "1rem",
+                      marginBottom: "1.25rem",
+                      boxShadow: `0 8px 16px ${feature.color}20`,
+                      position: "relative",
+                      zIndex: 1
                     }}
                   >
-                    <feature.icon size={24} color={feature.color} />
+                    <feature.icon size={28} color={feature.color} />
                   </div>
 
                   <h3
                     style={{
                       fontFamily: "var(--font-display)",
                       fontWeight: 800,
-                      fontSize: "1rem",
+                      fontSize: "1.2rem",
                       color: "var(--color-heading)",
-                      marginBottom: "0.4rem",
+                      marginBottom: "0.5rem",
+                      position: "relative",
+                      zIndex: 1
                     }}
                   >
                     {feature.title}
                   </h3>
-                  <p style={{ color: "var(--color-text-muted)", fontSize: "0.875rem", marginBottom: feature.items.length > 0 ? "1rem" : 0 }}>
+                  <p style={{ color: "var(--color-text)", fontSize: "0.95rem", marginBottom: feature.items.length > 0 ? "1.5rem" : 0, lineHeight: 1.7, position: "relative", zIndex: 1 }}>
                     {feature.desc}
                   </p>
 
                   {feature.items.length > 0 && (
                     <div
                       style={{
-                        background: "var(--color-bg)",
+                        background: "rgba(255,255,255,0.5)",
+                        border: "1px solid rgba(0,0,0,0.05)",
                         borderRadius: "var(--radius-md)",
-                        padding: "0.75rem 1rem",
+                        padding: "1rem",
                         display: "flex",
                         flexDirection: "column",
-                        gap: "0.35rem",
+                        gap: "0.5rem",
+                        position: "relative",
+                        zIndex: 1
                       }}
                     >
                       {feature.items.map((item) => (
                         <div
                           key={item}
                           style={{
-                            fontSize: "0.8rem",
-                            color: item.includes("اختبار") || item.includes("امتحان") ? feature.color : "var(--color-text-muted)",
-                            fontWeight: item.includes("اختبار") || item.includes("امتحان") ? 700 : 400,
+                            fontSize: "0.85rem",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "0.5rem",
+                            color: item.includes("اختبار") || item.includes("امتحان") ? feature.color : "var(--color-text)",
+                            fontWeight: item.includes("اختبار") || item.includes("امتحان") ? 700 : 500,
                           }}
                         >
-                          {item}
+                          <span style={{ color: feature.color }}>✓</span> {item}
                         </div>
                       ))}
                     </div>
@@ -859,7 +944,7 @@ export default function HomePage() {
 
             {/* Package tabs */}
             <div style={{ display: "flex", justifyContent: "center", gap: "0.5rem", marginBottom: "2.5rem", flexWrap: "wrap" }}>
-              {packages.map((pkg) => (
+              {dynPackages.map((pkg: any) => (
                 <button
                   key={pkg.id}
                   onClick={() => setActivePackageTab(pkg.id)}
@@ -906,30 +991,42 @@ export default function HomePage() {
               style={{
                 maxWidth: 480,
                 margin: "0 auto",
-                background: "var(--color-surface)",
-                border: "2px dashed var(--primary-300)",
+                background: "rgba(255,255,255,0.7)",
+                backdropFilter: "blur(10px)",
+                border: "1px solid rgba(255,255,255,0.8)",
                 borderRadius: "var(--radius-xl)",
-                padding: "3rem",
+                padding: "3.5rem 2rem",
                 textAlign: "center",
-                animation: "fadeIn 0.3s ease",
+                animation: "fadeIn 0.5s ease",
+                boxShadow: "0 10px 40px rgba(99,102,241,0.08)",
+                position: "relative",
+                overflow: "hidden"
               }}
             >
-              <div style={{ fontSize: "4rem", marginBottom: "1rem" }}>📦</div>
+              <div style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                height: 4,
+                background: "linear-gradient(90deg, var(--primary-400), var(--accent-400))"
+              }} />
+              <div style={{ fontSize: "4rem", marginBottom: "1rem", animation: "float 4s ease-in-out infinite" }}>📦</div>
               <h3
                 style={{
                   fontFamily: "var(--font-display)",
-                  fontWeight: 800,
-                  fontSize: "1.25rem",
+                  fontWeight: 900,
+                  fontSize: "1.5rem",
                   color: "var(--color-heading)",
                   marginBottom: "0.5rem",
                 }}
               >
-                قريباً!
+                الباقات قريباً!
               </h3>
-              <p style={{ color: "var(--color-text-muted)", fontSize: "0.9rem", marginBottom: "1.5rem" }}>
-                الباقات هتتاح قريباً — سجل الآن عشان تكون أول واحد يعرف
+              <p style={{ color: "var(--color-text-muted)", fontSize: "0.95rem", marginBottom: "2rem", lineHeight: 1.6 }}>
+                نعمل حالياً على تجهيز الباقات بأفضل الأسعار وأقوى محتوى. سجل الآن عشان تكون أول واحد يعرف.
               </p>
-              <Link href="/register" className="btn btn-primary">
+              <Link href="/register" className="btn btn-primary btn-lg" style={{ width: "100%", borderRadius: "var(--radius-full)" }}>
                 سجل الآن مجاناً ✨
               </Link>
             </div>
