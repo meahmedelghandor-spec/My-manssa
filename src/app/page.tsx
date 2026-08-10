@@ -583,7 +583,8 @@ export default function HomePage() {
                     maxWidth: 550, 
                     position: "relative", 
                     zIndex: 1,
-                    filter: "drop-shadow(0 20px 40px rgba(0,0,0,0.1))"
+                    filter: "drop-shadow(0 20px 40px rgba(0,0,0,0.1))",
+                    borderRadius: "2rem"
                   }} 
                 />
               </div>

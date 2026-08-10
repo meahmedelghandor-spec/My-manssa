@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BookOpen, Video, FileText, AlertTriangle, Trophy, Clock, Play, ChevronLeft, Bell, BarChart2, CheckCircle, Lock, MessageCircle, Settings, LogOut, Menu, X } from "lucide-react";
 import { getUserProfile, logout } from "@/app/actions/auth";
+import Footer from "@/components/Footer";
 
 const sidebarLinks = [
   { href: "/dashboard", label: "الرئيسية", icon: BarChart2 },
@@ -85,6 +86,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </header>
 
         {children}
+        <div style={{ marginTop: "auto" }}>
+          <Footer />
+        </div>
       </div>
 
       <style>{`

@@ -199,10 +199,12 @@ export default function Footer() {
             <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
               {dynSocial
                 .filter((s) => s.category === "فيسبوك")
-                .map((link) => (
+                .map((link) => {
+                  const cleanHref = link.href?.startsWith("#http") ? link.href.substring(1) : link.href;
+                  return (
                   <a
                     key={link.label}
-                    href={link.href}
+                    href={cleanHref}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{
@@ -248,7 +250,7 @@ export default function Footer() {
                       </div>
                     </div>
                   </a>
-                ))}
+                )})}
             </div>
           </div>
 
@@ -272,10 +274,12 @@ export default function Footer() {
             <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
               {dynSocial
                 .filter((s) => s.category === "فيديو وسوشيال")
-                .map((link) => (
+                .map((link) => {
+                  const cleanHref = link.href?.startsWith("#http") ? link.href.substring(1) : link.href;
+                  return (
                   <a
                     key={link.label}
-                    href={link.href}
+                    href={cleanHref}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{
@@ -321,7 +325,7 @@ export default function Footer() {
                       </div>
                     </div>
                   </a>
-                ))}
+                )})}
             </div>
           </div>
 
@@ -343,10 +347,12 @@ export default function Footer() {
               <Phone size={14} /> الدعم والتواصل
             </h4>
             <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-              {dynSupport.map((link) => (
+              {dynSupport.map((link) => {
+                const cleanHref = link.href?.startsWith("#http") ? link.href.substring(1) : link.href;
+                return (
                 <a
                   key={link.label}
-                  href={link.href}
+                  href={cleanHref}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
@@ -397,7 +403,7 @@ export default function Footer() {
                     )}
                   </div>
                 </a>
-              ))}
+              )})}
             </div>
           </div>
         </div>
