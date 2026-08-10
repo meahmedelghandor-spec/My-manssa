@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Video, Play, ChevronLeft, ChevronDown, ChevronUp, BarChart2, FileText, AlertTriangle, MessageCircle, Settings, LogOut, Menu, X, BookOpen, ArrowRight } from "lucide-react";
+import { Video, Play, ChevronLeft, ChevronDown, ChevronUp, BarChart2, FileText, AlertTriangle, MessageCircle, Settings, LogOut, Menu, X, BookOpen, ArrowRight, Lock } from "lucide-react";
 import { getCourseLectures } from "@/app/actions/student";
 import { getUserProfile, logout } from "@/app/actions/auth";
 import { useParams, useRouter } from "next/navigation";
@@ -14,13 +14,12 @@ export default function CourseDetailsPage() {
   const [openUnits, setOpenUnits] = useState<string[]>([]);
   const [units, setUnits] = useState<any[]>([]);
   const [selectedVideoUrl, setSelectedVideoUrl] = useState<string | null>(null);
+  const [isCourseLocked, setIsCourseLocked] = useState(false);
 
   useEffect(() => {
-
     getCourseLectures(id).then(res => {
       if (res.locked) {
-        router.replace(`/dashboard/courses/${id}/enroll`);
-        return;
+        setIsCourseLocked(true);
       }
       if (res.grouped) {
         const formatted = Object.keys(res.grouped).map(unit => ({
@@ -53,6 +52,18 @@ export default function CourseDetailsPage() {
             <p style={{ color: "var(--color-text-muted)", fontSize: "0.9rem" }}>جميع الوحدات والدروس الخاصة بهذا الكورس</p>
           </div>
 
+          {isCourseLocked && (
+            <div style={{ background: "rgba(239, 68, 68, 0.1)", border: "1px solid rgba(239, 68, 68, 0.3)", borderRadius: "var(--radius-md)", padding: "1rem", marginBottom: "2rem", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", color: "#ef4444" }}>
+                <Lock size={20} />
+                <span style={{ fontWeight: 600 }}>يجب الاشتراك في الكورس لتتمكن من مشاهدة المحاضرات.</span>
+              </div>
+              <Link href={`/dashboard/courses/${id}/enroll`} className="btn btn-primary" style={{ padding: "0.5rem 1rem", fontSize: "0.85rem", textDecoration: "none" }}>
+                اشترك الآن
+              </Link>
+            </div>
+          )}
+
           <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
             {units.length === 0 ? (
               <div style={{ textAlign: "center", padding: "2rem", color: "var(--color-text-muted)" }}>لا توجد محاضرات متاحة حالياً في هذا الكورس</div>
@@ -83,9 +94,15 @@ export default function CourseDetailsPage() {
                               <div style={{ fontWeight: 800, color: "var(--color-heading)", fontSize: "0.95rem" }}>{lec.title}</div>
                               {lec.lesson_name && <div style={{ fontSize: "0.8rem", color: "var(--color-text-muted)", marginTop: "0.2rem" }}>{lec.lesson_name}</div>}
                             </div>
-                            <button onClick={() => setSelectedVideoUrl(lec.video_url)} className="btn btn-primary" style={{ padding: "0.5rem 1rem", fontSize: "0.85rem", borderRadius: "var(--radius-md)", flexShrink: 0, border: 'none', cursor: 'pointer' }}>
-                              مشاهدة
-                            </button>
+                            {isCourseLocked ? (
+                              <button disabled style={{ padding: "0.5rem 1rem", fontSize: "0.85rem", borderRadius: "var(--radius-md)", flexShrink: 0, border: 'none', background: 'var(--color-bg-muted)', color: 'var(--color-text-muted)', display: 'flex', alignItems: 'center', gap: '0.4rem', cursor: 'not-allowed' }}>
+                                <Lock size={14} /> مقفول
+                              </button>
+                            ) : (
+                              <button onClick={() => setSelectedVideoUrl(lec.video_url)} className="btn btn-primary" style={{ padding: "0.5rem 1rem", fontSize: "0.85rem", borderRadius: "var(--radius-md)", flexShrink: 0, border: 'none', cursor: 'pointer' }}>
+                                مشاهدة
+                              </button>
+                            )}
                           </div>
                         ))}
                       </div>

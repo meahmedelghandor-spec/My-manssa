@@ -53,10 +53,11 @@ export async function getCourseLectures(courseId: string) {
   const { data: course } = await supabase.from('courses').select('price').eq('id', courseId).single()
   if (!course) return { error: "الكورس غير موجود" }
 
+  let isLocked = false;
   if (Number(course.price) > 0) {
     const { data: enrollment } = await supabase.from('course_enrollments').select('status').eq('course_id', courseId).eq('student_id', user.id).single()
     if (!enrollment || enrollment.status !== 'active') {
-      return { locked: true }
+      isLocked = true;
     }
   }
 
@@ -66,17 +67,24 @@ export async function getCourseLectures(courseId: string) {
     .eq('course_id', courseId)
     .order('created_at', { ascending: true })
 
-  if (error || !lectures) return {}
+  if (error || !lectures) return { locked: isLocked }
 
   // Group by unit_name
   const grouped = lectures.reduce((acc: any, lecture) => {
     const unit = lecture.unit_name || lecture.chapter || 'محاضرات عامة'
     if (!acc[unit]) acc[unit] = []
-    acc[unit].push(lecture)
+    
+    if (isLocked) {
+      const { video_url, ...safeLecture } = lecture;
+      acc[unit].push(safeLecture)
+    } else {
+      acc[unit].push(lecture)
+    }
+    
     return acc
   }, {})
 
-  return { grouped }
+  return { locked: isLocked, grouped }
 }
 
 export async function getStudentDashboardStats() {
