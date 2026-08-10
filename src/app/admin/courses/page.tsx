@@ -180,7 +180,7 @@ export default function AdminCoursesPage() {
                 if(img) img.style.transform = 'scale(1)';
               }}
             >
-              <div style={{ position: 'relative', width: '100%', height: 160, overflow: 'hidden' }}>
+              <div style={{ position: 'relative', width: '100%', height: 220, overflow: 'hidden' }}>
                 {course.image_url ? (
                   <div className="admin-course-img" style={{ width: '100%', height: '100%', backgroundImage: `url(${course.image_url})`, backgroundSize: 'cover', backgroundPosition: 'center', transition: 'transform 0.5s ease' }} />
                 ) : (
