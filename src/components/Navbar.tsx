@@ -3,20 +3,23 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Sun, Moon, LogIn, UserPlus } from "lucide-react";
+import { useTheme } from "next-themes";
 
-interface NavbarProps {
-  darkMode: boolean;
-  toggleDark: () => void;
-}
-
-export default function Navbar({ darkMode, toggleDark }: NavbarProps) {
+export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const handleScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const toggleDark = () => {
+    setTheme(theme === "dark" ? "light" : "dark");
+  };
 
   return (
     <header
@@ -27,8 +30,8 @@ export default function Navbar({ darkMode, toggleDark }: NavbarProps) {
         zIndex: 100,
         height: "var(--navbar-h)",
         background: scrolled
-          ? "rgba(255,255,255,0.95)"
-          : "rgba(255,255,255,0.85)",
+          ? "var(--navbar-bg, rgba(255,255,255,0.95))"
+          : "var(--navbar-bg-transparent, rgba(255,255,255,0.85))",
         backdropFilter: "blur(14px)",
         WebkitBackdropFilter: "blur(14px)",
         borderBottom: "1px solid var(--color-border)",
@@ -105,7 +108,7 @@ export default function Navbar({ darkMode, toggleDark }: NavbarProps) {
               position: "relative",
             }}
           >
-            {darkMode ? <Sun size={16} /> : <Moon size={16} />}
+            {mounted && (theme === "dark" ? <Sun size={16} /> : <Moon size={16} />)}
           </button>
 
           {/* Login */}

@@ -219,8 +219,8 @@ export default function Footer() {
                       textDecoration: "none",
                     }}
                     onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLElement).style.background = link.bg;
-                      (e.currentTarget as HTMLElement).style.borderColor = link.color + "40";
+                      (e.currentTarget as HTMLElement).style.background = "var(--color-bg-soft)";
+                      (e.currentTarget as HTMLElement).style.borderColor = "var(--color-border-strong)";
                     }}
                     onMouseLeave={(e) => {
                       (e.currentTarget as HTMLElement).style.background = "var(--color-bg)";
@@ -294,8 +294,8 @@ export default function Footer() {
                       textDecoration: "none",
                     }}
                     onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLElement).style.background = link.bg;
-                      (e.currentTarget as HTMLElement).style.borderColor = link.color + "40";
+                      (e.currentTarget as HTMLElement).style.background = "var(--color-bg-soft)";
+                      (e.currentTarget as HTMLElement).style.borderColor = "var(--color-border-strong)";
                     }}
                     onMouseLeave={(e) => {
                       (e.currentTarget as HTMLElement).style.background = "var(--color-bg)";
@@ -367,8 +367,8 @@ export default function Footer() {
                     textDecoration: "none",
                   }}
                   onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.background = link.bg;
-                    (e.currentTarget as HTMLElement).style.borderColor = link.color + "40";
+                    (e.currentTarget as HTMLElement).style.background = "var(--color-bg-soft)";
+                    (e.currentTarget as HTMLElement).style.borderColor = "var(--color-border-strong)";
                   }}
                   onMouseLeave={(e) => {
                     (e.currentTarget as HTMLElement).style.background = "var(--color-bg)";

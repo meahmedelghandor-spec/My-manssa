@@ -382,7 +382,6 @@ function StudentCard({ student }: { student: typeof topStudents2026[0] }) {
 
 // ── Main Page ─────────────────────────────────────────────────────────────────
 export default function HomePage() {
-  const [darkMode, setDarkMode] = useState(false);
   const [activePackageTab, setActivePackageTab] = useState("3months");
   const [studentsTab, setStudentsTab] = useState<"2026" | "2025">("2026");
   const [recentCourses, setRecentCourses] = useState<any[]>([]);
@@ -410,18 +409,11 @@ export default function HomePage() {
     });
   }, []);
 
-  const toggleDark = () => {
-    setDarkMode((d) => {
-      document.documentElement.setAttribute("data-theme", !d ? "dark" : "light");
-      return !d;
-    });
-  };
-
   const targetDate = new Date(dynCountdown.targetDate || "2026-08-08T00:00:00");
 
   return (
     <div style={{ minHeight: "100dvh", display: "flex", flexDirection: "column" }}>
-      <Navbar darkMode={darkMode} toggleDark={toggleDark} />
+      <Navbar />
 
       <main style={{ flex: 1, paddingTop: "var(--navbar-h)" }}>
 
@@ -431,7 +423,7 @@ export default function HomePage() {
             minHeight: "calc(100dvh - var(--navbar-h))",
             display: "flex",
             alignItems: "center",
-            background: "linear-gradient(135deg, var(--color-bg) 0%, #e0e7ff 100%)",
+            background: "linear-gradient(135deg, var(--color-bg) 0%, var(--color-bg-soft) 100%)",
             position: "relative",
             overflow: "hidden",
             padding: "4rem 0"
@@ -482,10 +474,10 @@ export default function HomePage() {
                     gap: "0.5rem",
                     padding: "0.5rem 1.25rem",
                     borderRadius: "var(--radius-full)",
-                    background: "rgba(255, 255, 255, 0.6)",
+                    background: "var(--color-surface)",
                     backdropFilter: "blur(10px)",
-                    border: "1px solid rgba(255,255,255,0.8)",
-                    color: "var(--primary-700)",
+                    border: "1px solid var(--color-border)",
+                    color: "var(--color-primary)",
                     fontWeight: 800,
                     fontSize: "0.875rem",
                     marginBottom: "1.5rem",
@@ -528,9 +520,9 @@ export default function HomePage() {
                   }}
                 >
                   مع الأستاذ{" "}
-                  <strong style={{ color: "var(--primary-700)", fontWeight: 800 }}>احمد الغندور</strong>
+                  <strong style={{ color: "var(--color-primary)", fontWeight: 800 }}>احمد الغندور</strong>
                   . خبرة تتجاوز{" "}
-                  <strong style={{ color: "var(--accent-500)", fontWeight: 800 }}>27 سنة</strong>{" "}
+                  <strong style={{ color: "var(--accent-500)", fontWeight: 800 }}>5 سنوات</strong>{" "}
                   في تدريس الفيزياء للثانوية العامة، وآلاف الطلاب حققوا التفوق والدرجات النهائية.
                 </p>
 
@@ -550,7 +542,7 @@ export default function HomePage() {
                   <Link href="/register" className="btn btn-primary btn-lg" style={{ padding: "1rem 2.5rem", fontSize: "1.1rem", borderRadius: "var(--radius-full)" }}>
                     🚀 ابدأ الآن مجاناً
                   </Link>
-                  <Link href="/login" className="btn btn-ghost btn-lg" style={{ padding: "1rem 2.5rem", fontSize: "1.1rem", borderRadius: "var(--radius-full)", background: "rgba(255,255,255,0.7)", backdropFilter: "blur(10px)" }}>
+                  <Link href="/login" className="btn btn-ghost btn-lg" style={{ padding: "1rem 2.5rem", fontSize: "1.1rem", borderRadius: "var(--radius-full)", background: "var(--color-surface)", backdropFilter: "blur(10px)" }}>
                     تسجيل الدخول
                   </Link>
                 </div>

@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     template: "%s | منصة مستر احمد الغندور",
   },
   description:
-    "منصة تعليمية متخصصة في مادة الفيزياء للثانوية العامة مع أ. احمد الغندور — خبرة تتجاوز 27 سنة، دروس فيديو، امتحانات إلكترونية، ومتابعة أكاديمية متكاملة.",
+    "منصة تعليمية متخصصة في مادة الفيزياء للثانوية العامة مع أ. احمد الغندور — خبرة تتجاوز 5 سنوات، دروس فيديو، امتحانات إلكترونية، ومتابعة أكاديمية متكاملة.",
   keywords: ["فيزياء", "ثانوية عامة", "تعليم", "مصر", "دروس أونلاين", "احمد الغندور"],
   authors: [{ name: "أ. احمد الغندور" }],
   openGraph: {
@@ -23,18 +23,24 @@ export const viewport: Viewport = {
   themeColor: "#6366f1",
 };
 
+import { ThemeProvider } from "@/components/ThemeProvider";
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ar" dir="rtl">
+    <html lang="ar" dir="rtl" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <body>{children}</body>
+      <body>
+        <ThemeProvider attribute="data-theme" defaultTheme="light">
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
