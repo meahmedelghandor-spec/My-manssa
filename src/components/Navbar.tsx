@@ -2,24 +2,16 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Sun, Moon, LogIn, UserPlus } from "lucide-react";
-import { useTheme } from "next-themes";
+import { LogIn, UserPlus } from "lucide-react";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-  const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
     const handleScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  const toggleDark = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
-  };
 
   return (
     <header
@@ -89,28 +81,6 @@ export default function Navbar() {
 
         {/* Actions */}
         <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-          {/* Dark Mode Toggle */}
-          <button
-            onClick={toggleDark}
-            aria-label="تبديل الوضع الليلي"
-            style={{
-              width: 38,
-              height: 38,
-              borderRadius: "var(--radius-full)",
-              border: "1.5px solid var(--color-border)",
-              background: "var(--color-surface)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              cursor: "pointer",
-              color: "var(--color-text-muted)",
-              transition: "all var(--transition-fast)",
-              position: "relative",
-            }}
-          >
-            {mounted && (theme === "dark" ? <Sun size={16} /> : <Moon size={16} />)}
-          </button>
-
           {/* Login */}
           <Link
             href="/login"
