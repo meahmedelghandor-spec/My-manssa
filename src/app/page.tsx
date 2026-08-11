@@ -584,68 +584,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* ── TOP STUDENTS ────────────────────────────────────────────────── */}
-        <section className="section" style={{ background: "var(--color-surface)" }}>
-          <div className="container">
-            {/* Tabs */}
-            <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
-              <div
-                style={{
-                  display: "inline-flex",
-                  gap: "0.5rem",
-                  background: "var(--color-bg)",
-                  padding: "0.35rem",
-                  borderRadius: "var(--radius-full)",
-                  border: "1px solid var(--color-border)",
-                  marginBottom: "2rem",
-                }}
-              >
-                {[
-                  { id: "2026", label: "🏆 أوائل 2026" },
-                  { id: "2025", label: "🥇 أوائل 2025" },
-                ].map((tab) => (
-                  <button
-                    key={tab.id}
-                    onClick={() => setStudentsTab(tab.id as "2026" | "2025")}
-                    style={{
-                      padding: "0.5rem 1.25rem",
-                      borderRadius: "var(--radius-full)",
-                      border: "none",
-                      fontFamily: "var(--font-sans)",
-                      fontWeight: 700,
-                      fontSize: "0.875rem",
-                      cursor: "pointer",
-                      transition: "all var(--transition-fast)",
-                      background: studentsTab === tab.id ? "var(--primary-500)" : "transparent",
-                      color: studentsTab === tab.id ? "#fff" : "var(--color-text-muted)",
-                    }}
-                  >
-                    {tab.label}
-                  </button>
-                ))}
-              </div>
-
-              <h2 className="section-title" style={{ marginBottom: "0.75rem" }}>
-                أوائل الجمهورية {studentsTab}
-              </h2>
-              <p className="section-subtitle">
-                طلابنا اللي حققوا أعلى الدرجات على مستوى الجمهورية
-              </p>
-            </div>
-
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
-                gap: "1.25rem",
-              }}
-            >
-              {(studentsTab === "2026" ? dynTopStudents2026 : dynTopStudents2025).map((s) => (
-                <StudentCard key={s.name} student={s} />
-              ))}
-            </div>
-          </div>
-        </section>
 
         {/* ── COUNTDOWN ───────────────────────────────────────────────────── */}
         {dynCountdown.visible && (
