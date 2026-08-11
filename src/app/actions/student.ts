@@ -91,7 +91,7 @@ export async function getStudentDashboardStats() {
   const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) return { recentLectures: [], totalLectures: 0, courses: [], totalCourses: 0, mistakesCount: 0, averageGrade: 0, progress: 0 }
+  if (!user) return { recentLectures: [], totalLectures: 0, courses: [], otherCourses: [], totalCourses: 0, mistakesCount: 0, averageGrade: 0, progress: 0 }
 
   const { data: profile } = await supabase
     .from('profiles')
@@ -99,14 +99,15 @@ export async function getStudentDashboardStats() {
     .eq('id', user.id)
     .single()
 
-  if (!profile) return { recentLectures: [], totalLectures: 0, courses: [], totalCourses: 0, mistakesCount: 0, averageGrade: 0, progress: 0 }
+  if (!profile) return { recentLectures: [], totalLectures: 0, courses: [], otherCourses: [], totalCourses: 0, mistakesCount: 0, averageGrade: 0, progress: 0 }
 
-  const { data: courses } = await supabase
+  const { data: allCourses } = await supabase
     .from('courses')
     .select('*')
-    .eq('grade', profile.grade)
-    .eq('section', profile.section || 'arabic')
     .order('created_at', { ascending: false })
+    
+  const courses = allCourses ? allCourses.filter(c => c.grade === profile.grade && (c.section === profile.section || (!c.section && profile.section === 'arabic'))) : []
+  const otherCourses = allCourses ? allCourses.filter(c => c.grade !== profile.grade || (c.section !== profile.section && !(!c.section && profile.section === 'arabic'))) : []
 
   const courseIds = courses?.map(c => c.id) || []
   const totalCourses = courseIds.length
@@ -193,6 +194,7 @@ export async function getStudentDashboardStats() {
     recentLectures,
     totalLectures,
     courses: coursesWithStatus.slice(0, 4),
+    otherCourses,
     totalCourses,
     mistakesCount,
     averageGrade,

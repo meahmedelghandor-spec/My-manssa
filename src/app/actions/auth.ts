@@ -74,6 +74,8 @@ export async function signup(formData: FormData) {
         full_name: fullName,
         grade: grade,
         section: section,
+        phone: phone,
+        email: generateEmailFromPhone(phone)
       }
     }
   })
