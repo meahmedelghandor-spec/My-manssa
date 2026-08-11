@@ -129,295 +129,77 @@ export default function Footer() {
       style={{
         background: "var(--color-surface)",
         borderTop: "1px solid var(--color-border)",
-        paddingTop: "3rem",
-        paddingBottom: "2rem",
+        paddingTop: "2.5rem",
+        paddingBottom: "1.5rem",
       }}
     >
       <div className="container">
-        {/* Teacher info */}
-        <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "0.75rem",
-              marginBottom: "0.5rem",
-            }}
-          >
-            <span style={{ fontSize: "1.5rem" }}>👨‍🏫</span>
-            <div>
-              <div
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontWeight: 800,
-                  fontSize: "1.25rem",
-                  color: "var(--color-heading)",
-                }}
-              >
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '3rem', justifyContent: 'space-between', marginBottom: '2.5rem' }}>
+          
+          {/* Teacher Info */}
+          <div style={{ flex: '1 1 250px', maxWidth: '350px' }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.75rem" }}>
+              <span style={{ fontSize: "1.2rem" }}>👨‍🏫</span>
+              <div style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: "1.1rem", color: "var(--color-heading)" }}>
                 {dynTeacher.name}
               </div>
             </div>
-          </div>
-          <p style={{ color: "var(--color-text-muted)", fontSize: "0.9rem" }}>
-            {dynTeacher.desc} •{" "}
-            <a
-              href={`mailto:${dynTeacher.email}`}
-              style={{ color: "var(--primary-500)", fontWeight: 600 }}
-            >
+            <p style={{ color: "var(--color-text-muted)", fontSize: "0.85rem", lineHeight: 1.6, marginBottom: '0.75rem' }}>
+              {dynTeacher.desc}
+            </p>
+            <a href={`mailto:${dynTeacher.email}`} style={{ color: "var(--primary-600)", fontSize: "0.85rem", fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '0.4rem', textDecoration: 'none' }}>
+              <MessageCircle size={14} />
               {dynTeacher.email}
             </a>
-          </p>
-        </div>
-
-        {/* Social Links */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: "3rem",
-            marginBottom: "3rem",
-          }}
-        >
-          {/* Facebook */}
-          <div>
-            <h4
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.4rem",
-                fontSize: "0.85rem",
-                fontWeight: 700,
-                color: "var(--color-text-muted)",
-                marginBottom: "0.75rem",
-                textTransform: "uppercase",
-                letterSpacing: "0.05em",
-              }}
-            >
-              <Facebook size={14} /> فيسبوك
-            </h4>
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-              {dynSocial
-                .filter((s) => s.category === "فيسبوك")
-                .map((link) => {
-                  const cleanHref = link.href?.startsWith("#http") ? link.href.substring(1) : link.href;
-                  return (
-                  <a
-                    key={link.label}
-                    href={cleanHref}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "0.75rem",
-                      padding: "0.75rem",
-                      borderRadius: "var(--radius-md)",
-                      border: "1px solid var(--color-border)",
-                      background: "var(--color-bg)",
-                      transition: "all var(--transition-fast)",
-                      textDecoration: "none",
-                    }}
-                    onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLElement).style.background = "var(--color-bg-soft)";
-                      (e.currentTarget as HTMLElement).style.borderColor = "var(--color-border-strong)";
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLElement).style.background = "var(--color-bg)";
-                      (e.currentTarget as HTMLElement).style.borderColor = "var(--color-border)";
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: 36,
-                        height: 36,
-                        borderRadius: "var(--radius-md)",
-                        background: link.bg,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexShrink: 0,
-                      }}
-                    >
-                      <link.icon size={18} color={link.color} />
-                    </div>
-                    <div>
-                      <div style={{ fontWeight: 700, fontSize: "0.875rem", color: "var(--color-heading)" }}>
-                        {link.label}
-                      </div>
-                      <div style={{ fontSize: "0.78rem", color: "var(--color-text-muted)" }}>
-                        {link.desc}
-                      </div>
-                    </div>
-                  </a>
-                )})}
-            </div>
           </div>
 
-          {/* Video & Social */}
-          <div>
-            <h4
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.4rem",
-                fontSize: "0.85rem",
-                fontWeight: 700,
-                color: "var(--color-text-muted)",
-                marginBottom: "0.75rem",
-                textTransform: "uppercase",
-                letterSpacing: "0.05em",
-              }}
-            >
-              <Youtube size={14} /> فيديو وسوشيال
+          {/* Social Links Group */}
+          <div style={{ flex: '1 1 150px' }}>
+            <h4 style={{ fontSize: "0.9rem", fontWeight: 700, color: "var(--color-heading)", marginBottom: "1rem" }}>
+              تواصل معنا
             </h4>
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-              {dynSocial
-                .filter((s) => s.category === "فيديو وسوشيال")
-                .map((link) => {
-                  const cleanHref = link.href?.startsWith("#http") ? link.href.substring(1) : link.href;
-                  return (
-                  <a
-                    key={link.label}
-                    href={cleanHref}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "0.75rem",
-                      padding: "0.75rem",
-                      borderRadius: "var(--radius-md)",
-                      border: "1px solid var(--color-border)",
-                      background: "var(--color-bg)",
-                      transition: "all var(--transition-fast)",
-                      textDecoration: "none",
-                    }}
-                    onMouseEnter={(e) => {
-                      (e.currentTarget as HTMLElement).style.background = "var(--color-bg-soft)";
-                      (e.currentTarget as HTMLElement).style.borderColor = "var(--color-border-strong)";
-                    }}
-                    onMouseLeave={(e) => {
-                      (e.currentTarget as HTMLElement).style.background = "var(--color-bg)";
-                      (e.currentTarget as HTMLElement).style.borderColor = "var(--color-border)";
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: 36,
-                        height: 36,
-                        borderRadius: "var(--radius-md)",
-                        background: link.bg,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexShrink: 0,
-                      }}
-                    >
-                      <link.icon size={18} color={link.color} />
-                    </div>
-                    <div>
-                      <div style={{ fontWeight: 700, fontSize: "0.875rem", color: "var(--color-heading)" }}>
-                        {link.label}
-                      </div>
-                      <div style={{ fontSize: "0.78rem", color: "var(--color-text-muted)" }}>
-                        {link.desc}
-                      </div>
-                    </div>
-                  </a>
-                )})}
-            </div>
-          </div>
-
-          {/* Support */}
-          <div>
-            <h4
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.4rem",
-                fontSize: "0.85rem",
-                fontWeight: 700,
-                color: "var(--color-text-muted)",
-                marginBottom: "0.75rem",
-                textTransform: "uppercase",
-                letterSpacing: "0.05em",
-              }}
-            >
-              <Phone size={14} /> الدعم والتواصل
-            </h4>
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-              {dynSupport.map((link) => {
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+              {dynSocial.map((link, idx) => {
                 const cleanHref = link.href?.startsWith("#http") ? link.href.substring(1) : link.href;
                 return (
-                <a
-                  key={link.label}
-                  href={cleanHref}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.75rem",
-                    padding: "0.75rem",
-                    borderRadius: "var(--radius-md)",
-                    border: "1px solid var(--color-border)",
-                    background: "var(--color-bg)",
-                    transition: "all var(--transition-fast)",
-                    textDecoration: "none",
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.background = "var(--color-bg-soft)";
-                    (e.currentTarget as HTMLElement).style.borderColor = "var(--color-border-strong)";
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.background = "var(--color-bg)";
-                    (e.currentTarget as HTMLElement).style.borderColor = "var(--color-border)";
-                  }}
-                >
-                  <div
-                    style={{
-                      width: 36,
-                      height: 36,
-                      borderRadius: "var(--radius-md)",
-                      background: link.bg,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0,
-                    }}
-                  >
-                    <link.icon size={18} color={link.color} />
-                  </div>
-                  <div>
-                    <div style={{ fontWeight: 700, fontSize: "0.875rem", color: "var(--color-heading)" }}>
-                      {link.label}
-                    </div>
-                    <div style={{ fontSize: "0.78rem", color: "var(--color-text-muted)" }}>
-                      {link.desc}
-                    </div>
-                    {"phone" in link && link.phone && (
-                      <div style={{ fontSize: "0.8rem", fontWeight: 700, color: link.color, marginTop: "0.15rem" }}>
-                        {link.phone}
-                      </div>
-                    )}
-                  </div>
-                </a>
-              )})}
+                  <a key={idx} href={cleanHref} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--color-text-muted)", textDecoration: "none", fontSize: "0.85rem", transition: 'color var(--transition-fast)' }} onMouseEnter={(e) => (e.currentTarget.style.color = link.color)} onMouseLeave={(e) => (e.currentTarget.style.color = "var(--color-text-muted)")}>
+                    <link.icon size={16} />
+                    <span>{link.label}</span>
+                  </a>
+                );
+              })}
             </div>
           </div>
+
+          {/* Support Links Group */}
+          <div style={{ flex: '1 1 150px' }}>
+            <h4 style={{ fontSize: "0.9rem", fontWeight: 700, color: "var(--color-heading)", marginBottom: "1rem" }}>
+              الدعم الفني
+            </h4>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+              {dynSupport.map((link, idx) => {
+                const cleanHref = link.href?.startsWith("#http") ? link.href.substring(1) : link.href;
+                return (
+                  <div key={idx} style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+                    <a href={cleanHref} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--color-text-muted)", textDecoration: "none", fontSize: "0.85rem", transition: 'color var(--transition-fast)' }} onMouseEnter={(e) => (e.currentTarget.style.color = link.color)} onMouseLeave={(e) => (e.currentTarget.style.color = "var(--color-text-muted)")}>
+                      <link.icon size={16} />
+                      <span>{link.label}</span>
+                    </a>
+                    {"phone" in link && link.phone && (
+                      <span style={{ fontSize: "0.75rem", color: "var(--color-text-subtle)", paddingInlineStart: "1.5rem" }}>
+                        {link.phone}
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
         </div>
 
         {/* Bottom */}
-        <div
-          style={{
-            borderTop: "1px solid var(--color-border)",
-            paddingTop: "1.25rem",
-            textAlign: "center",
-            color: "var(--color-text-muted)",
-            fontSize: "0.825rem",
-          }}
-        >
+        <div style={{ borderTop: "1px solid var(--color-border)", paddingTop: "1.25rem", textAlign: "center", color: "var(--color-text-muted)", fontSize: "0.8rem" }}>
           © {year} منصة مستر احمد الغندور — جميع الحقوق محفوظة
         </div>
       </div>

@@ -94,8 +94,8 @@ export default function SettingsForm({ userProfile }: { userProfile: any }) {
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginTop: '0.5rem' }}>
             <div className="form-group">
-              <label className="form-label"><BookOpen size={16} /> الصف الدراسي</label>
-              <select name="grade" className="form-input" defaultValue={userProfile?.grade || 'sec_1'}>
+              <label className="form-label"><BookOpen size={16} /> الصف الدراسي (غير قابل للتعديل)</label>
+              <select name="grade" className="form-input" value={userProfile?.grade || 'sec_1'} disabled style={{ background: 'var(--color-bg-muted)', color: 'var(--color-text-muted)', opacity: 0.8 }}>
                 <option value="prep_1">الصف الأول الإعدادي</option>
                 <option value="prep_2">الصف الثاني الإعدادي</option>
                 <option value="prep_3">الصف الثالث الإعدادي</option>
@@ -106,8 +106,8 @@ export default function SettingsForm({ userProfile }: { userProfile: any }) {
             </div>
 
             <div className="form-group">
-              <label className="form-label"><Layers size={16} /> الشعبة</label>
-              <select name="section" className="form-input" defaultValue={userProfile?.section || 'arabic'}>
+              <label className="form-label"><Layers size={16} /> الشعبة (غير قابلة للتعديل)</label>
+              <select name="section" className="form-input" value={userProfile?.section || 'arabic'} disabled style={{ background: 'var(--color-bg-muted)', color: 'var(--color-text-muted)', opacity: 0.8 }}>
                 <option value="arabic">عربي</option>
                 <option value="languages">لغات</option>
               </select>

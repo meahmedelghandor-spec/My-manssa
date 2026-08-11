@@ -13,8 +13,6 @@ export async function updateProfileSettings(formData: FormData) {
 
   const secondaryPhone = formData.get('secondaryPhone') as string
   const contactEmail = formData.get('contactEmail') as string
-  const grade = formData.get('grade') as string
-  const section = formData.get('section') as string
 
   // Update profile
   const { error } = await supabase
@@ -22,8 +20,6 @@ export async function updateProfileSettings(formData: FormData) {
     .update({
       secondary_phone: secondaryPhone,
       contact_email: contactEmail,
-      grade: grade,
-      section: section,
     })
     .eq('id', user.id)
 
