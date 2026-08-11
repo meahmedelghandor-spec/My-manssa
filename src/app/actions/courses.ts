@@ -3,7 +3,7 @@
 import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
 
-export async function createCourse(data: { title: string; description: string; grade: string; section: string; image_url?: string; price?: number }) {
+export async function createCourse(data: { title: string; description: string; grade: string; section: string; image_url?: string; price?: number; original_price?: number }) {
   const supabase = await createClient()
   
   const { data: user, error: userError } = await supabase.auth.getUser()
@@ -18,6 +18,7 @@ export async function createCourse(data: { title: string; description: string; g
       section: data.section,
       image_url: data.image_url,
       price: data.price || 0,
+      original_price: data.original_price || null,
       created_by: user.user.id
     }])
 
@@ -44,7 +45,7 @@ export async function getAdminCourses() {
   return data
 }
 
-export async function updateCourse(id: string, data: { title: string; description: string; grade: string; section: string; image_url?: string; price?: number }) {
+export async function updateCourse(id: string, data: { title: string; description: string; grade: string; section: string; image_url?: string; price?: number; original_price?: number }) {
   const supabase = await createClient()
   
   const { data: user, error: userError } = await supabase.auth.getUser()
@@ -56,6 +57,7 @@ export async function updateCourse(id: string, data: { title: string; descriptio
     grade: data.grade,
     section: data.section,
     price: data.price || 0,
+    original_price: data.original_price || null,
   }
   if (data.image_url) {
     updateData.image_url = data.image_url

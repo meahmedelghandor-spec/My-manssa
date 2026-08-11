@@ -26,6 +26,7 @@ export default function AdminCoursesPage() {
   const [grade, setGrade] = useState('');
   const [section, setSection] = useState('arabic');
   const [price, setPrice] = useState('0');
+  const [originalPrice, setOriginalPrice] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
 
   const [errorMsg, setErrorMsg] = useState('');
@@ -70,7 +71,7 @@ export default function AdminCoursesPage() {
     }
 
     if (editCourseId) {
-      const res = await updateCourse(editCourseId, { title, description, grade, section, price: parseFloat(price) || 0, image_url: imageUrl || undefined });
+      const res = await updateCourse(editCourseId, { title, description, grade, section, price: parseFloat(price) || 0, original_price: originalPrice ? parseFloat(originalPrice) : undefined, image_url: imageUrl || undefined });
       if (res?.error) {
         setErrorMsg(res.error);
       } else {
@@ -78,7 +79,7 @@ export default function AdminCoursesPage() {
         fetchCourses();
       }
     } else {
-      const res = await createCourse({ title, description, grade, section, price: parseFloat(price) || 0, image_url: imageUrl });
+      const res = await createCourse({ title, description, grade, section, price: parseFloat(price) || 0, original_price: originalPrice ? parseFloat(originalPrice) : undefined, image_url: imageUrl });
       if (res?.error) {
         setErrorMsg(res.error);
       } else {
@@ -98,6 +99,7 @@ export default function AdminCoursesPage() {
     setGrade('');
     setSection('arabic');
     setPrice('0');
+    setOriginalPrice('');
     setImageFile(null);
     setErrorMsg('');
   };
@@ -109,6 +111,7 @@ export default function AdminCoursesPage() {
     setGrade(course.grade || '');
     setSection(course.section || 'arabic');
     setPrice(course.price ? String(course.price) : '0');
+    setOriginalPrice(course.original_price ? String(course.original_price) : '');
     setShowAddModal(true);
   };
 
@@ -213,7 +216,10 @@ export default function AdminCoursesPage() {
                   <span style={{ background: course.section === 'languages' ? '#fdf4ff' : '#ecfdf5', color: course.section === 'languages' ? '#c026d3' : '#059669', padding: '0.25rem 0.75rem', borderRadius: 'var(--radius-full)', fontSize: '0.75rem', fontWeight: 700 }}>
                     {getSectionLabel(course.section)}
                   </span>
-                  <span style={{ background: 'var(--primary-100)', color: 'var(--primary-700)', padding: '0.25rem 0.75rem', borderRadius: 'var(--radius-full)', fontSize: '0.75rem', fontWeight: 700, marginInlineStart: 'auto' }}>
+                  <span style={{ background: 'var(--primary-100)', color: 'var(--primary-700)', padding: '0.25rem 0.75rem', borderRadius: 'var(--radius-full)', fontSize: '0.75rem', fontWeight: 700, marginInlineStart: 'auto', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    {course.original_price && course.original_price > course.price ? (
+                      <span style={{ textDecoration: 'line-through', color: 'var(--color-text-muted)', fontSize: '0.7rem' }}>{course.original_price} ج</span>
+                    ) : null}
                     {course.price > 0 ? `${course.price} ج.م` : 'مجاني'}
                   </span>
                 </div>
@@ -265,10 +271,18 @@ export default function AdminCoursesPage() {
                 </div>
               </div>
 
-              <div className="form-group">
-                <label className="form-label">سعر الكورس (ج.م) *</label>
-                <input type="number" className="form-input" min="0" placeholder="مثال: 150" value={price} onChange={(e) => setPrice(e.target.value)} required />
-                <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '0.25rem' }}>اكتب 0 إذا كان الكورس مجانياً وسيفتح للطلاب فوراً.</p>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div className="form-group">
+                  <label className="form-label">سعر الكورس (ج.م) *</label>
+                  <input type="number" className="form-input" min="0" placeholder="مثال: 150" value={price} onChange={(e) => setPrice(e.target.value)} required />
+                  <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '0.25rem' }}>اكتب 0 إذا كان الكورس مجانياً وسيفتح للطلاب فوراً.</p>
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">السعر قبل الخصم (ج.م)</label>
+                  <input type="number" className="form-input" min="0" placeholder="اختياري: مثال 200" value={originalPrice} onChange={(e) => setOriginalPrice(e.target.value)} />
+                  <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '0.25rem' }}>سيظهر مشطوباً بجانب السعر الحالي لزيادة المبيعات.</p>
+                </div>
               </div>
 
               <div className="form-group">

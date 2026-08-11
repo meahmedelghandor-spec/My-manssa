@@ -29,4 +29,4 @@ SET
 FROM auth.users
 WHERE profiles.id = auth.users.id 
   AND profiles.phone IS NULL 
-  AND auth.users.email LIKE '%@student.com';
+  AND auth.users.email LIKE '%@mr-ahmed.com';

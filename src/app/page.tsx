@@ -780,10 +780,13 @@ export default function HomePage() {
                       
                       <div style={{ paddingTop: "1rem", borderTop: "1px solid var(--color-border)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                         <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                           {course.original_price && course.original_price > course.price ? (
+                             <span style={{ textDecoration: 'line-through', color: 'var(--color-text-muted)', fontSize: '0.9rem' }}>{course.original_price} ج</span>
+                           ) : null}
                            {course.price && course.price > 0 ? (
                              <span style={{ fontWeight: 900, color: "#10b981", fontSize: "1.2rem" }}>{course.price} ج.م</span>
                            ) : (
-                             <span style={{ fontWeight: 800, color: "var(--primary-600)", fontSize: "1.1rem" }}>مجاني</span>
+                             <span style={{ fontWeight: 700, color: "var(--primary-600)", fontSize: "1rem" }}>مجاني</span>
                            )}
                         </div>
                         <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
