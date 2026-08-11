@@ -738,7 +738,7 @@ export default function HomePage() {
                       if(img) img.style.transform = 'scale(1)';
                     }}
                   >
-                    <div style={{ position: 'relative', width: '100%', height: 200, overflow: 'hidden' }}>
+                    <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9', overflow: 'hidden' }}>
                       {course.image_url ? (
                         <div className="course-img" style={{ width: '100%', height: '100%', backgroundImage: `url(${course.image_url})`, backgroundSize: 'cover', backgroundPosition: 'center', transition: 'transform 0.5s ease' }} />
                       ) : (

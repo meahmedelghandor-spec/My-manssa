@@ -65,7 +65,7 @@ export default function CoursesPage() {
                     if(img) img.style.transform = 'scale(1)';
                   }}
                 >
-                  <div style={{ position: 'relative', width: '100%', height: 220, overflow: 'hidden' }}>
+                  <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9', overflow: 'hidden' }}>
                     {course.image_url ? (
                       <div className="lectures-course-img" style={{ width: '100%', height: '100%', backgroundImage: `url(${course.image_url})`, backgroundSize: 'cover', backgroundPosition: 'center', transition: 'transform 0.5s ease' }}>
                         {course.enrollment_status === 'locked' && <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Lock size={32} color="#fff" /></div>}

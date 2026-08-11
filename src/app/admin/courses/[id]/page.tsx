@@ -187,9 +187,9 @@ export default function AdminCourseDetailsPage() {
         {/* Course Info Sidebar */}
         <div style={{ width: '100%', maxWidth: 320, background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-xl)', overflow: 'hidden' }}>
           {course.image_url ? (
-            <div style={{ width: '100%', height: 180, backgroundImage: `url(${course.image_url})`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
+            <div style={{ width: '100%', aspectRatio: '16/9', backgroundImage: `url(${course.image_url})`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
           ) : (
-            <div style={{ width: '100%', height: 180, background: 'var(--primary-100)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ width: '100%', aspectRatio: '16/9', background: 'var(--primary-100)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Video size={48} color="var(--primary-300)" />
             </div>
           )}
