@@ -5,6 +5,7 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FloatingButtons from "@/components/FloatingButtons";
+import PhysicsHero from "@/components/PhysicsHero";
 import { getRecentCourses } from "@/app/actions/courses";
 import { getLandingSettings } from "@/app/actions/landing";
 import {
@@ -548,38 +549,8 @@ export default function HomePage() {
                 </div>
               </div>
 
-              {/* Graphic/Image */}
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  animation: "float 6s ease-in-out infinite",
-                  position: "relative"
-                }}
-              >
-                <div style={{
-                  position: "absolute",
-                  width: "100%",
-                  height: "100%",
-                  background: "radial-gradient(circle, rgba(99,102,241,0.2) 0%, transparent 70%)",
-                  filter: "blur(40px)",
-                  zIndex: 0
-                }} />
-                
-                <img 
-                  src="/images/physics-hero.png" 
-                  alt="Physics Hero Illustration" 
-                  style={{ 
-                    width: "100%", 
-                    maxWidth: 550, 
-                    position: "relative", 
-                    zIndex: 1,
-                    filter: "drop-shadow(0 20px 40px rgba(0,0,0,0.1))",
-                    borderRadius: "2rem"
-                  }} 
-                />
-              </div>
+              {/* Animated Physics Hero */}
+              <PhysicsHero />
             </div>
           </div>
         </section>
