@@ -779,12 +779,15 @@ export default function HomePage() {
                       </p>
                       
                       <div style={{ paddingTop: "1rem", borderTop: "1px solid var(--color-border)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                        <div className={course.original_price && course.original_price > course.price ? "price-badge" : ""} style={{ display: "flex", alignItems: "center", gap: "0.5rem", borderRadius: "var(--radius-full)" }}>
                            {course.original_price && course.original_price > course.price ? (
-                             <span style={{ textDecoration: 'line-through', color: 'var(--color-text-muted)', fontSize: '0.9rem' }}>{course.original_price} ج</span>
+                             <>
+                               <span className="live-indicator"></span>
+                               <span style={{ textDecoration: 'line-through', color: '#f87171', fontSize: '0.85rem' }}>{course.original_price} ج</span>
+                             </>
                            ) : null}
                            {course.price && course.price > 0 ? (
-                             <span style={{ fontWeight: 900, color: "#10b981", fontSize: "1.2rem" }}>{course.price} ج.م</span>
+                             <span style={{ fontWeight: 900, color: (course.original_price && course.original_price > course.price) ? "#b91c1c" : "#10b981", fontSize: "1.2rem" }}>{course.price} ج.م</span>
                            ) : (
                              <span style={{ fontWeight: 700, color: "var(--primary-600)", fontSize: "1rem" }}>مجاني</span>
                            )}
@@ -1049,8 +1052,7 @@ export default function HomePage() {
               {[
                 { icon: Users, value: "+2000", label: "طالب استفاد", color: "#6366f1" },
                 { icon: Video, value: "+500", label: "فيديو تعليمي", color: "#10b981" },
-                { icon: Star, value: "27", label: "سنة خبرة", color: "#f59e0b" },
-                { icon: Trophy, value: "+100", label: "أوائل جمهورية", color: "#ef4444" },
+                { icon: Star, value: "+6", label: "سنوات خبرة", color: "#f59e0b" },
               ].map((stat) => (
                 <div
                   key={stat.label}

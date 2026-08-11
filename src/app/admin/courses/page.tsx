@@ -216,12 +216,17 @@ export default function AdminCoursesPage() {
                   <span style={{ background: course.section === 'languages' ? '#fdf4ff' : '#ecfdf5', color: course.section === 'languages' ? '#c026d3' : '#059669', padding: '0.25rem 0.75rem', borderRadius: 'var(--radius-full)', fontSize: '0.75rem', fontWeight: 700 }}>
                     {getSectionLabel(course.section)}
                   </span>
-                  <span style={{ background: 'var(--primary-100)', color: 'var(--primary-700)', padding: '0.25rem 0.75rem', borderRadius: 'var(--radius-full)', fontSize: '0.75rem', fontWeight: 700, marginInlineStart: 'auto', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <div className={course.original_price && course.original_price > course.price ? "price-badge" : ""} style={{ background: 'var(--primary-100)', color: 'var(--primary-700)', padding: '0.25rem 0.75rem', borderRadius: 'var(--radius-full)', fontSize: '0.75rem', fontWeight: 700, marginInlineStart: 'auto', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     {course.original_price && course.original_price > course.price ? (
-                      <span style={{ textDecoration: 'line-through', color: 'var(--color-text-muted)', fontSize: '0.7rem' }}>{course.original_price} ج</span>
+                      <>
+                        <span className="live-indicator"></span>
+                        <span style={{ textDecoration: 'line-through', color: '#f87171', fontSize: '0.7rem' }}>{course.original_price} ج</span>
+                      </>
                     ) : null}
-                    {course.price > 0 ? `${course.price} ج.م` : 'مجاني'}
-                  </span>
+                    <span style={{ color: (course.original_price && course.original_price > course.price) ? '#b91c1c' : 'inherit' }}>
+                      {course.price > 0 ? `${course.price} ج.م` : 'مجاني'}
+                    </span>
+                  </div>
                 </div>
               </div>
             </Link>

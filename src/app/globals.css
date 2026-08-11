@@ -279,3 +279,31 @@ button { font-family: inherit; }
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--neutral-300); border-radius: 3px; }
+
+/* ============================================================
+   NEW STYLES
+   ============================================================ */
+@keyframes live-pulse {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+  70% { transform: scale(1.1); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+.live-indicator {
+  width: 8px;
+  height: 8px;
+  background-color: var(--error-500);
+  border-radius: 50%;
+  display: inline-block;
+  animation: live-pulse 1.5s infinite;
+  margin-inline-end: 6px;
+}
+
+.price-badge {
+  background: linear-gradient(135deg, #fef2f2, #fee2e2) !important;
+  border: 1px solid #fca5a5 !important;
+  color: #b91c1c !important;
+  padding: 0.35rem 1rem !important;
+  font-size: 0.85rem !important;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15) !important;
+}

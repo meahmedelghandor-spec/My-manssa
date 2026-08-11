@@ -152,12 +152,15 @@ export default function DashboardPage() {
                         {course.description || "لا يوجد وصف متاح لهذا الكورس."}
                       </p>
                       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "1rem", paddingTop: "1rem", borderTop: "1px solid var(--color-border)" }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                        <div className={course.original_price && course.original_price > course.price && course.enrollment_status !== 'active' ? "price-badge" : ""} style={{ display: "flex", alignItems: "center", gap: "0.5rem", borderRadius: "var(--radius-full)" }}>
                            {course.original_price && course.original_price > course.price && course.enrollment_status !== 'active' ? (
-                             <span style={{ textDecoration: 'line-through', color: 'var(--color-text-muted)', fontSize: '0.85rem' }}>{course.original_price} ج</span>
+                             <>
+                               <span className="live-indicator"></span>
+                               <span style={{ textDecoration: 'line-through', color: '#f87171', fontSize: '0.85rem' }}>{course.original_price} ج</span>
+                             </>
                            ) : null}
                            {course.price && course.price > 0 && course.enrollment_status !== 'active' ? (
-                             <span style={{ fontWeight: 900, color: "#10b981", fontSize: "1.1rem" }}>{course.price} ج.م</span>
+                             <span style={{ fontWeight: 900, color: (course.original_price && course.original_price > course.price) ? "#b91c1c" : "#10b981", fontSize: "1.1rem" }}>{course.price} ج.م</span>
                            ) : course.enrollment_status === 'active' ? (
                              <span style={{ fontWeight: 700, color: "var(--primary-600)", fontSize: "0.9rem" }}>تم الاشتراك ✅</span>
                            ) : (
@@ -275,12 +278,15 @@ export default function DashboardPage() {
                         {course.description || "لا يوجد وصف متاح لهذا الكورس."}
                       </p>
                       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "1rem", paddingTop: "1rem", borderTop: "1px solid var(--color-border)" }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                        <div className={course.original_price && course.original_price > course.price ? "price-badge" : ""} style={{ display: "flex", alignItems: "center", gap: "0.5rem", borderRadius: "var(--radius-full)" }}>
                            {course.original_price && course.original_price > course.price ? (
-                             <span style={{ textDecoration: 'line-through', color: 'var(--color-text-muted)', fontSize: '0.85rem' }}>{course.original_price} ج</span>
+                             <>
+                               <span className="live-indicator"></span>
+                               <span style={{ textDecoration: 'line-through', color: '#f87171', fontSize: '0.85rem' }}>{course.original_price} ج</span>
+                             </>
                            ) : null}
                            {course.price && course.price > 0 ? (
-                             <span style={{ fontWeight: 900, color: "#10b981", fontSize: "1.1rem" }}>{course.price} ج.م</span>
+                             <span style={{ fontWeight: 900, color: (course.original_price && course.original_price > course.price) ? "#b91c1c" : "#10b981", fontSize: "1.1rem" }}>{course.price} ج.م</span>
                            ) : (
                              <span style={{ fontWeight: 700, color: "var(--primary-600)", fontSize: "0.9rem" }}>مجاني</span>
                            )}
