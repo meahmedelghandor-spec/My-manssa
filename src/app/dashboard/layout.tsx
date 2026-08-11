@@ -73,7 +73,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <aside className="mob-sidebar" style={{ position: "fixed", top: 0, insetInlineEnd: 0, height: "100dvh", width: 260, background: "var(--color-surface)", borderInlineStart: "1px solid var(--color-border)", display: "flex", flexDirection: "column", zIndex: 50, transition: "transform var(--transition-base)", transform: sidebarOpen ? "translateX(0)" : "translateX(105%)", overflowY: "auto" }}>
         <SidebarContent onClose={() => setSidebarOpen(false)} student={student} pathname={pathname} />
       </aside>
-      <aside className="desk-sidebar" style={{ width: 260, minHeight: "100dvh", background: "var(--color-surface)", borderInlineStart: "1px solid var(--color-border)", flexDirection: "column", flexShrink: 0, display: "none" }}>
+      <aside className="desk-sidebar" style={{ width: 260, height: "100dvh", position: "sticky", top: 0, overflowY: "auto", background: "var(--color-surface)", borderInlineStart: "1px solid var(--color-border)", flexDirection: "column", flexShrink: 0, display: "none" }}>
         <SidebarContent student={student} pathname={pathname} />
       </aside>
 
