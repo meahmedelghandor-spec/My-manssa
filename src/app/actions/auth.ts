@@ -30,6 +30,31 @@ export async function login(formData: FormData) {
   redirect('/dashboard')
 }
 
+// Function to send WhatsApp message using CallMeBot
+async function sendWhatsAppNotification(fullName: string, phone: string, grade: string, section: string) {
+  const adminPhone = "201091264904";
+  const apiKey = "5753015";
+  
+  const grades: Record<string, string> = {
+    prep_1: 'الصف الأول الإعدادي', prep_2: 'الصف الثاني الإعدادي', prep_3: 'الصف الثالث الإعدادي',
+    sec_1: 'الصف الأول الثانوي', sec_2: 'الصف الثاني الثانوي', sec_3: 'الصف الثالث الثانوي'
+  };
+  const gradeLabel = grades[grade] || grade;
+  const sectionLabel = section === 'languages' ? 'لغات' : 'عربي';
+
+  const message = `🎉 تسجيل طالب جديد!\n👤 الاسم: ${fullName}\n📱 الموبايل: ${phone}\n📚 الصف: ${gradeLabel} (${sectionLabel})`;
+  const encodedMessage = encodeURIComponent(message);
+  
+  const url = `https://api.callmebot.com/whatsapp.php?phone=${adminPhone}&text=${encodedMessage}&apikey=${apiKey}`;
+  
+  try {
+    await fetch(url, { method: 'GET' });
+    console.log("WhatsApp notification sent for:", fullName);
+  } catch (error) {
+    console.error("Failed to send WhatsApp notification:", error);
+  }
+}
+
 export async function signup(formData: FormData) {
   const supabase = await createClient()
 
@@ -57,8 +82,8 @@ export async function signup(formData: FormData) {
     return { error: 'حدث خطأ أثناء إنشاء الحساب: ' + authError.message }
   }
 
-  // 2. We no longer manually insert into 'profiles' here! 
-  // A Postgres Trigger in Supabase will automatically read the metadata and insert the profile.
+  // 3. Send WhatsApp Notification to Admin
+  await sendWhatsAppNotification(fullName, phone, grade, section);
 
   revalidatePath('/', 'layout')
   redirect('/dashboard')

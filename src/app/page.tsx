@@ -779,11 +779,18 @@ export default function HomePage() {
                       </p>
                       
                       <div style={{ paddingTop: "1rem", borderTop: "1px solid var(--color-border)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                        <span style={{ fontWeight: 800, color: "var(--primary-600)", fontSize: "1rem", display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                          اشترك الآن <span style={{fontSize: '1.2rem'}}>✨</span>
-                        </span>
-                        <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'var(--primary-50)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary-600)' }}>
-                           <ChevronDown size={18} style={{ transform: 'rotate(90deg)' }} />
+                        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                           {course.price && course.price > 0 ? (
+                             <span style={{ fontWeight: 900, color: "#10b981", fontSize: "1.2rem" }}>{course.price} ج.م</span>
+                           ) : (
+                             <span style={{ fontWeight: 800, color: "var(--primary-600)", fontSize: "1.1rem" }}>مجاني</span>
+                           )}
+                        </div>
+                        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                           <span style={{ fontWeight: 700, color: "var(--color-text-muted)", fontSize: "0.9rem" }}>التفاصيل</span>
+                           <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--primary-50)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary-600)' }}>
+                              <ChevronDown size={16} style={{ transform: 'rotate(90deg)' }} />
+                           </div>
                         </div>
                       </div>
                     </div>

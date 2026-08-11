@@ -149,9 +149,20 @@ export default function DashboardPage() {
                         {course.description || "لا يوجد وصف متاح لهذا الكورس."}
                       </p>
                       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "1rem", paddingTop: "1rem", borderTop: "1px solid var(--color-border)" }}>
-                        <span style={{ fontWeight: 700, color: "var(--primary-600)", fontSize: "0.9rem" }}>تصفح المحتوى</span>
-                        <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--primary-50)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary-600)' }}>
-                           <ChevronLeft size={16} />
+                        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                           {course.price && course.price > 0 && course.enrollment_status !== 'active' ? (
+                             <span style={{ fontWeight: 900, color: "#10b981", fontSize: "1.1rem" }}>{course.price} ج.م</span>
+                           ) : course.enrollment_status === 'active' ? (
+                             <span style={{ fontWeight: 700, color: "var(--primary-600)", fontSize: "0.9rem" }}>تم الاشتراك ✅</span>
+                           ) : (
+                             <span style={{ fontWeight: 700, color: "var(--primary-600)", fontSize: "0.9rem" }}>مجاني</span>
+                           )}
+                        </div>
+                        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                           <span style={{ fontWeight: 600, color: "var(--color-text-muted)", fontSize: "0.85rem" }}>تصفح</span>
+                           <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'var(--primary-50)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary-600)' }}>
+                              <ChevronLeft size={14} />
+                           </div>
                         </div>
                       </div>
                     </div>

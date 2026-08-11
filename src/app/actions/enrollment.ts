@@ -2,6 +2,7 @@
 
 import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
+import { createNotification } from './notifications'
 
 export async function submitEnrollment(data: { course_id: string; payment_method: string; payment_number: string; receipt_url: string }) {
   const supabase = await createClient()
@@ -71,6 +72,26 @@ export async function updateEnrollmentStatus(enrollmentId: string, status: 'acti
 
   if (error) return { error: error.message }
   
+  // If activated, send notification to student
+  if (status === 'active') {
+    // We need the student ID to send the notification. We can query it or get it before update.
+    // Let's get the enrollment details first to get the student_id and course title.
+    const { data: enrollmentData } = await supabase
+      .from('course_enrollments')
+      .select('student_id, course:courses(title)')
+      .eq('id', enrollmentId)
+      .single()
+      
+    if (enrollmentData) {
+      const courseTitle = (enrollmentData.course as any)?.title || 'الكورس';
+      await createNotification(
+        enrollmentData.student_id,
+        "تم تفعيل اشتراكك",
+        `تم بنجاح تفعيل اشتراكك في: ${courseTitle}. يمكنك الآن بدء المذاكرة.`
+      )
+    }
+  }
+
   revalidatePath('/admin/payments')
   return { success: true }
 }
